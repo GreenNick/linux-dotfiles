@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Default programs
+export BROWSER="firefox"
+export EDITOR="nvim"
+export VISUAL="$HOME/Scripts/vimsplit"
+export PAGER="less"
+
+# Set default XDG directories
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+
+# Add ~/.local/bin to path
+[[ "$PATH" != *"$HOME/.local/bin"* ]] \
+  && export PATH=$PATH:$HOME/.local/bin \
+
+# Home directory clean-up
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+
+# Sort hidden files on top
+export LC_COLLATE="C"
+
+# Pfetch configuration
+export PF_INFO="ascii title os kernel memory uptime shell editor palette"

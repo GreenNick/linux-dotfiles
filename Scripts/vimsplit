@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -n "$TMUX" ]; then
+  pane_width="$(tmux display-message -p '#{pane_width}')"
+  pane_height="$(tmux display-message -p '#{pane_height}')"
+
+  client_width="$(tmux display-message -p '#{client_width}')"
+  client_height="$(tmux display-message -p '#{client_height}')"
+
+  # Horizontal split if new pane is at least 1/3 of client width
+  [ $(($pane_width / 2)) -ge $(($client_width / 3)) ] \
+    && tmux split-window -h "nvim '$*'" \
+    && exit
+
+  # Vertical split if new pane is at least 1/3 of client height
+  [ $(($pane_height / 2)) -ge $(($client_height / 3)) ] \
+    && tmux split-window -v "nvim '$*'" \
+    && exit
+fi
+
+# Open in-place if tmux is not active or if new pane is too small
+nvim "$*"

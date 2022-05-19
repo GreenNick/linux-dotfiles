@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Use aliases with sudo commands
+alias sudo="sudo "
+
+# Place wget history in XDG data directory
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+
+# Use colorized commands
+alias \
+    ls="ls --color=auto --group-directories-first" \
+    grep="grep --color=auto" \
+    egrep="egrep --color=auto" \
+    fgrep="fgrep --color=auto"
+
+# Use neovim in place of vim
+[ -x "$(command -v nvim)" ] \
+    && alias vim="nvim" vimdiff="nvim -d"
+
+# Open nnn
+alias n3="nnn -e"
+
+# Clear terminal and run pfetch
+alias fetch="clear && pfetch"
+
+# Handle dotfile tracking
+alias config='/usr/bin/git --git-dir=$HOME/Git/.dotfiles/ --work-tree=$HOME'
