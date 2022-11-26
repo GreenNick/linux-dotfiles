@@ -9,7 +9,7 @@ precmd () { vcs_info }
 setopt prompt_subst
 
 # Set shell prompt
-PROMPT='%B%F{blue}[%f%~%F{blue}]%f%F{green}: %f%F{magenta}%n%f%b %F{green}➤%f '
+PROMPT='%B%F{blue}[%f%~%F{blue}]%f %F{magenta}%n%f%b %F{green}➤%f '
 RPROMPT='%B$vcs_info_msg_0_%b'
 PS2=" %F{green}➜%f "
 

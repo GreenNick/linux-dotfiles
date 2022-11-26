@@ -16,8 +16,7 @@ call neomake#configure#automake('w')
 
 " Setup Catppuccin color scheme
 set termguicolors
-let g:catppuccin_flavour='macchiato'
-colorscheme catppuccin
+colorscheme catppuccin-macchiato
 
 " Enable dynamic line numbers
 set number

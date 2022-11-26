@@ -20,8 +20,8 @@ alias \
 # Open nnn
 alias n3="nnn -e"
 
-# Clear terminal and run pfetch
-alias fetch="clear && pfetch"
+# Clear terminal and run neofetch
+alias fetch="clear && neofetch"
 
 # Handle dotfile tracking
 alias config='/usr/bin/git --git-dir=$HOME/Git/.dotfiles/ --work-tree=$HOME'
