@@ -1,9 +1,12 @@
 # ZSH Configuration
 
+# Enable hooks
+autoload -Uz add-zsh-hook
+
 # Initialize and style version control info
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '%3F(%f%b%3F)%f'
-precmd () { vcs_info }
+zstyle ':vcs_info:*' formats ' %F{yellow}(%f%b%F{yellow})%f'
+add-zsh-hook -Uz precmd vcs_info
 
 # Enable prompt substitutions
 setopt prompt_subst
@@ -12,6 +15,14 @@ setopt prompt_subst
 PROMPT='%B%F{blue}[%f%~%F{blue}]%f %F{magenta}%n%f%b %F{green}➤%f '
 RPROMPT='%B$vcs_info_msg_0_%b'
 PS2=" %F{green}➜%f "
+
+# Prepend conda environment to prompt
+show_conda_env() {
+    [ ! -z $CONDA_DEFAULT_ENV ] \
+        && print -rP "%B%F{blue}{%f$CONDA_DEFAULT_ENV%F{yellow}}%f%b"
+}
+
+add-zsh-hook -Uz precmd show_conda_env
 
 # Load aliases
 [ -f "$XDG_CONFIG_HOME/shell/aliases" ] \
@@ -38,7 +49,7 @@ bindkey -v
     && { tmux attach -t default || tmux new -s default } \
     &> /dev/null
 
-# Clear terminal (and run pfetch) on startup
+# Clear terminal (and run neofetch) on startup
 fetch 2> /dev/null
 
 # Load system-specific configuration
@@ -48,7 +59,7 @@ fetch 2> /dev/null
 
 # [ Plugins ]
 # Enable improved vi mode
-source $HOME/Git/zsh-vi-mode/zsh-vi-mode.plugin.zsh \
+source $HOME/Git/zsh-vi-mode/zsh-vi-mode.zsh \
     2> /dev/null
 
 # Enable syntax highlighting

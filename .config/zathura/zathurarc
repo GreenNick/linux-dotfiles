@@ -1,0 +1,5 @@
+set adjust-open "width"
+
+set recolor true
+
+include catppuccin-macchiato

@@ -15,7 +15,17 @@ lspconfig.cssls.setup {}
 lspconfig.java_language_server.setup {}
 
 -- Python
-lspconfig.pylsp.setup {}
+lspconfig.pylsp.setup {
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'E302'}
+        }
+      }
+    }
+  }
+}
 
 -- Global diagnostic options
 vim.diagnostic.config({
