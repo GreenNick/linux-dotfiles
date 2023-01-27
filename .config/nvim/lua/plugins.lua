@@ -43,6 +43,9 @@ return require('packer').startup(function(use)
     as = 'catppuccin'
   }
 
+  -- Icons for nvim
+  use 'nvim-tree/nvim-web-devicons'
+
   -- Setup nnn as file explorer
   use {
     'luukvbaal/nnn.nvim',
@@ -61,16 +64,17 @@ return require('packer').startup(function(use)
     end
   }
 
+  -- Git integration
+  use 'lewis6991/gitsigns.nvim'
+
   -- Keybindings for code comments
-  use {
-    'numToStr/Comment.nvim',
-    config = function()
-      require('Comment').setup()
-    end
-  }
+  use 'echasnovski/mini.comment'
 
   -- Commands to work with "surroundings"
-  use 'tpope/vim-surround'
+  use 'echasnovski/mini.surround'
+
+  -- Custom statusline
+  use 'echasnovski/mini.statusline'
 
   -- Sync plugins after installing packer
   if packer_bootstrap then

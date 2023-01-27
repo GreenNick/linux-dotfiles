@@ -8,12 +8,14 @@ if [ -n "$TMUX" ]; then
   client_height="$(tmux display-message -p '#{client_height}')"
 
   # Horizontal split if new pane is at least 1/3 of client width
-  [ $(($pane_width / 2)) -ge $(($client_width / 3)) ] \
+  [ $pane_width -ge $(($pane_height * 2)) ] \
+    && [ $(($pane_width / 2)) -ge $(($client_width / 3)) ] \
     && tmux split-window -h "nvim '$*'" \
     && exit
 
   # Vertical split if new pane is at least 1/3 of client height
-  [ $(($pane_height / 2)) -ge $(($client_height / 3)) ] \
+  [ $pane_width -le $(($pane_height * 2)) ] \
+    && [ $(($pane_height / 2)) -ge $(($client_height / 3)) ] \
     && tmux split-window -v "nvim '$*'" \
     && exit
 fi

@@ -18,7 +18,7 @@ alias \
     && alias vim="nvim" vimdiff="nvim -d"
 
 # Open nnn
-alias n3="nnn -e"
+alias n3="nnn -de"
 
 # Clear terminal and run neofetch
 alias fetch="clear && neofetch"
