@@ -11,20 +11,20 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "Noto Sans 10"
+theme.font          = "Noto Sans 11"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
+theme.bg_normal     = "#24273a" -- Macchiato Base
+theme.bg_focus      = "#c6a0f6" -- Latte Mauve
+theme.bg_urgent     = "#ed8796" -- Macchiato Red
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
+theme.fg_normal     = "#cad3f5" -- Macchiato Text
+theme.fg_focus      = "#24273a" -- Macchiato Base
+theme.fg_urgent     = "#24273a" -- Macchiato Base
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = dpi(4)
+theme.useless_gap   = dpi(3)
 theme.border_width  = dpi(3)
 theme.border_normal = "#b7bdf8" -- Macchiato Lavender
 theme.border_focus  = "#7287fd" -- Latte Lavender
@@ -119,7 +119,7 @@ theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, theme.bg_focus, theme.fg_focus
+    theme.menu_height, theme.bg_normal, theme.fg_normal
 )
 
 -- Define the icon theme for application icons. If not set then the icons
