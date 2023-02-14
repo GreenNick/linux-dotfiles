@@ -9,3 +9,6 @@ run() {
 
 # Run picom compositor
 run picom
+
+# Remap caps lock to ctrl
+run setxkbmap -option caps:ctrl_modifier

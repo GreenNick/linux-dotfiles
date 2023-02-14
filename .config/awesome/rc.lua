@@ -82,23 +82,21 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
-}
-
-mymainmenu = awful.menu({
+mainmenu = awful.menu({
     items = {
-        { "awesome", myawesomemenu, beautiful.awesome_icon },
-        { "open terminal", terminal }
+        { "terminal", terminal },
+        { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+        { "manual", terminal .. " -e man awesome" },
+        { "config", editor_cmd .. " " .. awesome.conffile },
+        { "reload", awesome.restart },
+        { "logout", function() awesome.quit() end }
     }
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+launcher = awful.widget.launcher({
+    image = beautiful.awesome_icon,
+    menu = mainmenu
+})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -175,7 +173,6 @@ awful.screen.connect_for_each_screen(function(s)
     local suit = awful.layout.suit
     local layouts = { suit.tile, suit.tile, suit.tile, suit.magnifier, suit.tile }
     awful.tag(tags, s, layouts)
-    -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[2])
 
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -187,18 +184,20 @@ awful.screen.connect_for_each_screen(function(s)
         awful.button({ }, 5, function () awful.layout.inc(-1) end)
     ))
     -- Create a taglist widget
-    s.taglist = awful.widget.taglist {
-        screen  = s,
-        filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
-    }
+    s.taglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
+    -- s.taglist = awful.widget.taglist {
+    --     screen  = s,
+    --     filter  = awful.widget.taglist.filter.all,
+    --     buttons = taglist_buttons
+    -- }
 
     -- Create a tasklist widget
-    s.tasklist = awful.widget.tasklist {
-        screen  = s,
-        filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
-    }
+    s.tasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+    -- s.tasklist = awful.widget.tasklist {
+    --     screen  = s,
+    --     filter  = awful.widget.tasklist.filter.currenttags,
+    --     buttons = tasklist_buttons
+    -- }
 
     -- Create the wibox
     s.wibar = awful.wibar({ position = "top", screen = s })
@@ -208,7 +207,7 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
+            launcher,
         },
         -- Middle widget
         s.taglist,
@@ -224,7 +223,7 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 3, function () mainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -253,7 +252,7 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    awful.key({ modkey,           }, "w", function () mainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
@@ -323,16 +322,18 @@ globalkeys = gears.table.join(
 
     -- Rofi
     awful.key({ modkey }, "r",
-              function () awful.spawn("rofi -modes 'drun,run,window' -show drun") end,
+              function ()
+                  awful.spawn("rofi -modes 'drun,run,window' -show drun")
+              end,
               { description = "run rofi launcher", group = "launcher" }),
 
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
+                      prompt       = "Run Lua code: ",
+                      textbox      = awful.screen.focused().mypromptbox.widget,
+                      exe_callback = awful.util.eval,
+                      history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end,
               { description = "lua execute prompt", group = "awesome" }),
@@ -344,47 +345,48 @@ globalkeys = gears.table.join(
 )
 
 clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
-        function (c)
-            c.fullscreen = not c.fullscreen
-            c:raise()
-        end,
-        {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
-              {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
-              {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-              {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "client"}),
-    awful.key({ modkey,           }, "n",
-        function (c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
-        end ,
-        {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
-        function (c)
-            c.maximized = not c.maximized
-            c:raise()
-        end ,
-        {description = "(un)maximize", group = "client"}),
+    awful.key({ modkey }, "f",
+              function (c)
+                  c.fullscreen = not c.fullscreen
+                  c:raise()
+              end,
+              { description = "toggle fullscreen", group = "client" }),
+    awful.key({ modkey }, "q",
+              function (c) c:kill() end,
+              { description = "quit", group = "client" }),
+    awful.key({ modkey, "Control" }, "space",
+              awful.client.floating.toggle,
+              { description = "toggle floating", group = "client" }),
+    awful.key({ modkey, "Control" }, "Return",
+              function (c) c:swap(awful.client.getmaster()) end,
+              { description = "move to master", group = "client" }),
+    awful.key({ modkey }, "o",
+              function (c) c:move_to_screen() end,
+              { description = "move to screen", group = "client" }),
+    awful.key({ modkey }, "t",
+              function (c) c.ontop = not c.ontop end,
+              { description = "toggle keep on top", group = "client" }),
+    awful.key({ modkey }, "n",
+              function (c) c.minimized = true end,
+              { description = "minimize", group = "client" }),
+    awful.key({ modkey }, "m",
+              function (c)
+                  c.maximized = not c.maximized
+                  c:raise()
+              end,
+              { description = "(un)maximize", group = "client" }),
     awful.key({ modkey, "Control" }, "m",
-        function (c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end ,
-        {description = "(un)maximize vertically", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end ,
-        {description = "(un)maximize horizontally", group = "client"})
+              function (c)
+                  c.maximized_vertical = not c.maximized_vertical
+                  c:raise()
+              end,
+              { description = "(un)maximize vertically", group = "client" }),
+    awful.key({ modkey, "Shift" }, "m",
+              function (c)
+                  c.maximized_horizontal = not c.maximized_horizontal
+                  c:raise()
+              end,
+              { description = "(un)maximize horizontally", group = "client" })
 )
 
 -- Bind all key numbers to tags.
