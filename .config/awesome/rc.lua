@@ -59,6 +59,9 @@ editor_cmd = terminal .. " -e " .. editor
 -- Default modkey.
 modkey = "Mod4"
 
+-- Screen lock command
+lock = "i3lock -i " .. os.getenv("HOME") .. "/Pictures/Wallpaper.png -e"
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.floating,
@@ -89,6 +92,7 @@ mainmenu = awful.menu({
         { "manual", terminal .. " -e man awesome" },
         { "config", editor_cmd .. " " .. awesome.conffile },
         { "reload", awesome.restart },
+        { "lock", lock},
         { "logout", function() awesome.quit() end }
     }
 })
@@ -124,29 +128,6 @@ local taglist_buttons = gears.table.join(
         end),
     awful.button({ }, 4, function(t) awful.tag.viewprev(t.screen) end),
     awful.button({ }, 5, function(t) awful.tag.viewnext(t.screen) end)
-)
-
-local tasklist_buttons = gears.table.join(
-    awful.button({ }, 1,
-        function (c)
-            if c == client.focus then
-                c.minimized = true
-            else
-                c:emit_signal("request::activate", "tasklist", {raise = true})
-            end
-        end),
-    awful.button({ }, 3,
-        function()
-            awful.menu.client_list({ theme = { width = 250 } })
-        end),
-    awful.button({ }, 4,
-        function ()
-            awful.client.focus.byidx(1)
-        end),
-    awful.button({ }, 5,
-        function ()
-            awful.client.focus.byidx(-1)
-        end)
 )
 
 local function set_wallpaper(s)
@@ -191,14 +172,6 @@ awful.screen.connect_for_each_screen(function(s)
     --     buttons = taglist_buttons
     -- }
 
-    -- Create a tasklist widget
-    s.tasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
-    -- s.tasklist = awful.widget.tasklist {
-    --     screen  = s,
-    --     filter  = awful.widget.tasklist.filter.currenttags,
-    --     buttons = tasklist_buttons
-    -- }
-
     -- Create the wibox
     s.wibar = awful.wibar({ position = "top", screen = s })
 
@@ -231,14 +204,18 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
-              {description = "view previous", group = "tag"}),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
-              {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
+    awful.key({ modkey }, "s",
+              hotkeys_popup.show_help,
+              { description="show help", group="awesome" }),
+    awful.key({ modkey }, "p",
+              awful.tag.viewprev,
+              { description = "view previous", group = "tag" }),
+    awful.key({ modkey }, "n",
+              awful.tag.viewnext,
+              { description = "view next", group = "tag" }),
+    awful.key({ modkey }, "Escape",
+              awful.tag.history.restore,
+              { description = "go back", group = "tag" }),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -276,12 +253,15 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-              {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
-              {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey }, "Return",
+              function () awful.spawn(terminal) end,
+              { description = "open a terminal", group = "launcher" }),
+    awful.key({ modkey, "Control" }, "r",
+              awesome.restart,
+              { description = "reload awesome", group = "awesome" }),
+    awful.key({ modkey, "Shift" }, "q",
+              awesome.quit,
+              { description = "quit awesome", group = "awesome" }),
 
     awful.key({ modkey }, "l",
               function () awful.tag.incmwfact(0.05) end,
@@ -308,7 +288,7 @@ globalkeys = gears.table.join(
               function () awful.layout.inc(-1) end,
               { description = "select previous", group = "layout" }),
 
-    awful.key({ modkey, "Control" }, "n",
+    awful.key({ modkey }, ".",
               function ()
                   local c = awful.client.restore()
                   -- Focus restored client
@@ -336,12 +316,7 @@ globalkeys = gears.table.join(
                       history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end,
-              { description = "lua execute prompt", group = "awesome" }),
-
-    -- Menubar
-    awful.key({ modkey }, "p",
-              function() menubar.show() end,
-              { description = "show the menubar", group = "launcher" })
+              { description = "lua execute prompt", group = "awesome" })
 )
 
 clientkeys = gears.table.join(
@@ -366,7 +341,7 @@ clientkeys = gears.table.join(
     awful.key({ modkey }, "t",
               function (c) c.ontop = not c.ontop end,
               { description = "toggle keep on top", group = "client" }),
-    awful.key({ modkey }, "n",
+    awful.key({ modkey }, ",",
               function (c) c.minimized = true end,
               { description = "minimize", group = "client" }),
     awful.key({ modkey }, "m",
