@@ -316,7 +316,17 @@ globalkeys = gears.table.join(
                       history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end,
-              { description = "lua execute prompt", group = "awesome" })
+              { description = "lua execute prompt", group = "awesome" }),
+
+    -- Volume control
+    awful.key({}, "XF86AudioRaiseVolume",
+              function()
+                  awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ +5%")
+              end),
+    awful.key({}, "XF86AudioLowerVolume",
+              function()
+                  awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ -5%")
+              end)
 )
 
 clientkeys = gears.table.join(

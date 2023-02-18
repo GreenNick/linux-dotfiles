@@ -13,6 +13,7 @@ lua require('treesitter')
 lua require('mini.comment').setup()
 lua require('mini.statusline').setup()
 lua require('mini.surround').setup()
+lua require('mini.trailspace').setup()
 
 " Neomake configuration
 let g:neomake_javascript_enabled_makers = ['standard']

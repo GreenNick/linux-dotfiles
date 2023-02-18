@@ -70,11 +70,14 @@ return require('packer').startup(function(use)
   -- Keybindings for code comments
   use 'echasnovski/mini.comment'
 
+  -- Custom statusline
+  use 'echasnovski/mini.statusline'
+
   -- Commands to work with "surroundings"
   use 'echasnovski/mini.surround'
 
-  -- Custom statusline
-  use 'echasnovski/mini.statusline'
+  -- Highlight trailing whitespace
+  use 'echasnovski/mini.trailspace' 
 
   -- Sync plugins after installing packer
   if packer_bootstrap then
