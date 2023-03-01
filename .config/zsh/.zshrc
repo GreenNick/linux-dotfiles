@@ -43,11 +43,10 @@ setopt autocd beep extendedglob nomatch notify
 # Enable vi key bindings
 bindkey -v
 
-# Auto attach to tmux session
-[ -x "$(command -v tmux)" ] \
-    && [ -z "${TMUX}" ] \
-    && { tmux attach -t default || tmux new -s default } \
-    &> /dev/null
+# Auto attach to Zellij session
+if [[ -z "$ZELLIJ" ]]; then
+    zellij attach -c main
+fi
 
 # Clear terminal (and run neofetch) on startup
 fetch 2> /dev/null

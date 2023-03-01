@@ -1,56 +1,45 @@
 -- Plugin Setup --
 
--- Download packer if it is not installed
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
     'git',
     'clone',
-    '--shallow-submodules',
-    'https://github.com/wbthomason/packer.nvim',
-    install_path
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath
   })
 end
+vim.opt.rtp:prepend(lazypath)
 
--- Resync packer when plugins are modified
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup END
-]])
-
--- Load plugins
-return require('packer').startup(function(use)
-  -- Package manager
-  use 'wbthomason/packer.nvim'
-
+local plugins = {
   -- Language Server Protocol configurations
-  use 'neovim/nvim-lspconfig'
+  'neovim/nvim-lspconfig',
 
   -- Language parsing and syntax highlighting
-  use {
+  {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
-  }
+    build = ':TSUpdate'
+  },
 
   -- Run external tools on events
-  use 'neomake/neomake'
+  'neomake/neomake',
 
   -- Catppuccin color schemes
-  use {
+  {
     'catppuccin/nvim',
-    as = 'catppuccin'
-  }
+    name = 'catppuccin'
+  },
 
   -- Icons for nvim
-  use 'nvim-tree/nvim-web-devicons'
+  'nvim-tree/nvim-web-devicons',
 
   -- Setup nnn as file explorer
-  use {
+  {
     'luukvbaal/nnn.nvim',
-    config = function()
-      local opts = {
+    config = function() require('nnn').setup({
         explorer = {
           width = 32
         },
@@ -58,30 +47,51 @@ return require('packer').startup(function(use)
           tabpage = 'picker'
         },
         replace_netrw = 'picker'
-      }
-
-      require('nnn').setup(opts)
+      })
     end
-  }
+  },
 
   -- Git integration
-  use 'lewis6991/gitsigns.nvim'
+  'lewis6991/gitsigns.nvim',
 
   -- Keybindings for code comments
-  use 'echasnovski/mini.comment'
+  {
+    'echasnovski/mini.comment',
+    config = function()
+      require('mini.comment').setup()
+    end
+  },
 
   -- Custom statusline
-  use 'echasnovski/mini.statusline'
+  {
+    'echasnovski/mini.statusline',
+    config = function()
+      require('mini.statusline').setup()
+    end
+  },
 
   -- Commands to work with "surroundings"
-  use 'echasnovski/mini.surround'
+  {
+    'echasnovski/mini.surround',
+    config = function()
+      require('mini.surround').setup()
+    end
+  },
 
   -- Highlight trailing whitespace
-  use 'echasnovski/mini.trailspace' 
+  {
+    'echasnovski/mini.trailspace', 
+    config = function()
+      require('mini.trailspace').setup()
+    end
+  }
+}
 
-  -- Sync plugins after installing packer
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
+local opts = {
+  checker = {
+    enabled = true
+  }
+}
+
+require('lazy').setup(plugins, opts)
 

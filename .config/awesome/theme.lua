@@ -25,7 +25,7 @@ theme.fg_urgent     = "#24273a" -- Macchiato Base
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(3)
-theme.border_width  = dpi(3)
+theme.border_width  = dpi(2)
 theme.border_normal = "#b7bdf8" -- Macchiato Lavender
 theme.border_focus  = "#7287fd" -- Latte Lavender
 theme.border_marked = "#e64553" -- Latte Maroon

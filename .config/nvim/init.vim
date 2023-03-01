@@ -9,12 +9,6 @@ lua require('language_servers')
 " Treesitter configuration
 lua require('treesitter')
 
-" Configure mini.nvim plugins
-lua require('mini.comment').setup()
-lua require('mini.statusline').setup()
-lua require('mini.surround').setup()
-lua require('mini.trailspace').setup()
-
 " Neomake configuration
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_javascript_standard_args = []

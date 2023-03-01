@@ -205,20 +205,29 @@ globalkeys = gears.table.join(
               awful.tag.history.restore,
               { description = "go back", group = "tag" }),
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "w", function () mainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    awful.key({ modkey }, "h",
+              function ()
+                  awful.client.focus.bydirection("left")
+              end,
+              { description = "focus left", group = "client" }),
+    awful.key({ modkey }, "j",
+              function ()
+                  awful.client.focus.bydirection("down")
+              end,
+              { description = "focus down", group = "client" }),
+    awful.key({ modkey }, "k",
+              function ()
+                  awful.client.focus.bydirection("up")
+              end,
+              { description = "focus up", group = "client" }),
+    awful.key({ modkey }, "l",
+              function ()
+                  awful.client.focus.bydirection("right")
+              end,
+              { description = "focus right", group = "client" }),
+    awful.key({ modkey }, "w",
+              function () mainmenu:show() end,
+              { description = "show main menu", group = "awesome" }),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -251,12 +260,12 @@ globalkeys = gears.table.join(
               awesome.quit,
               { description = "quit awesome", group = "awesome" }),
 
-    awful.key({ modkey }, "l",
-              function () awful.tag.incmwfact(0.05) end,
-              { description = "increase master width factor", group = "layout" }),
-    awful.key({ modkey }, "h",
-              function () awful.tag.incmwfact(-0.05) end,
-              { description = "decrease master width factor", group = "layout" }),
+    -- awful.key({ modkey }, "l",
+    --           function () awful.tag.incmwfact(0.05) end,
+    --           { description = "increase master width factor", group = "layout" }),
+    -- awful.key({ modkey }, "h",
+    --           function () awful.tag.incmwfact(-0.05) end,
+    --           { description = "decrease master width factor", group = "layout" }),
     awful.key({ modkey, "Shift" }, "h",
               function () awful.tag.incnmaster(1, nil, true) end,
               { description = "increase the number of master clients", group = "layout" }),
@@ -520,6 +529,19 @@ client.connect_signal("manage", function (c)
     -- Make client corners rounded
     c.shape = function(cr, w, h)
         gears.shape.rounded_rect(cr, w, h, 12)
+    end
+end)
+
+-- Remove borders and rounded edges when client is maximized
+client.connect_signal("property::maximized", function(c)
+    if c.maximized then
+        c.border_width = 0
+        c.shape = gears.shape.rect
+    else
+        c.border_width = beautiful.border_width
+        c.shape = function(cr, w, h)
+            gears.shape.rounded_rect(cr, w, h, 12)
+        end
     end
 end)
 
