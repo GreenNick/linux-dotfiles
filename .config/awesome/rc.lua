@@ -532,13 +532,24 @@ client.connect_signal("manage", function (c)
     end
 end)
 
--- Remove borders and rounded edges when client is maximized
+-- Remove borders and rounded corners when client is maximized
 client.connect_signal("property::maximized", function(c)
     if c.maximized then
         c.border_width = 0
         c.shape = gears.shape.rect
     else
         c.border_width = beautiful.border_width
+        c.shape = function(cr, w, h)
+            gears.shape.rounded_rect(cr, w, h, 12)
+        end
+    end
+end)
+
+-- Remove rounded corners when client is fullscreen
+client.connect_signal("property::fullscreen", function(c)
+    if c.fullscreen then
+        c.shape = gears.shape.rect
+    else
         c.shape = function(cr, w, h)
             gears.shape.rounded_rect(cr, w, h, 12)
         end
