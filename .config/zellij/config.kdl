@@ -1,5 +1,5 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
-keybinds {
+keybinds clear-defaults=true {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
@@ -20,23 +20,23 @@ keybinds {
         bind "=" "+" { Resize "Increase"; }
         bind "-" { Resize "Decrease"; }
     }
-    pane {
-        bind "Ctrl p" { SwitchToMode "Normal"; }
-        bind "h" "Left" { MoveFocus "Left"; }
-        bind "l" "Right" { MoveFocus "Right"; }
-        bind "j" "Down" { MoveFocus "Down"; }
-        bind "k" "Up" { MoveFocus "Up"; }
-        bind "p" { SwitchFocus; }
-        bind "n" { NewPane; SwitchToMode "Normal"; }
-        bind "d" { NewPane "Down"; SwitchToMode "Normal"; }
-        bind "r" { NewPane "Right"; SwitchToMode "Normal"; }
-        bind "x" { CloseFocus; SwitchToMode "Normal"; }
-        bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
-        bind "z" { TogglePaneFrames; SwitchToMode "Normal"; }
-        bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
-        bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
-        bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
-    }
+    /* pane { */
+    /*     bind "Ctrl p" { SwitchToMode "Normal"; } */
+    /*     bind "h" "Left" { MoveFocus "Left"; } */
+    /*     bind "l" "Right" { MoveFocus "Right"; } */
+    /*     bind "j" "Down" { MoveFocus "Down"; } */
+    /*     bind "k" "Up" { MoveFocus "Up"; } */
+    /*     bind "p" { SwitchFocus; } */
+    /*     bind "n" { NewPane; SwitchToMode "Normal"; } */
+    /*     bind "d" { NewPane "Down"; SwitchToMode "Normal"; } */
+    /*     bind "r" { NewPane "Right"; SwitchToMode "Normal"; } */
+    /*     bind "x" { CloseFocus; SwitchToMode "Normal"; } */
+    /*     bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; } */
+    /*     bind "z" { TogglePaneFrames; SwitchToMode "Normal"; } */
+    /*     bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; } */
+    /*     bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; } */
+    /*     bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;} */
+    /* } */
     move {
         bind "Ctrl h" { SwitchToMode "Normal"; }
         bind "n" "Tab" { MovePane; }
@@ -105,17 +105,18 @@ keybinds {
         bind "Ctrl c" { SwitchToMode "Normal"; }
         bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
     }
-    session {
-        bind "Ctrl o" { SwitchToMode "Normal"; }
-        bind "Ctrl s" { SwitchToMode "Scroll"; }
-        bind "d" { Detach; }
-    }
+    /* session { */
+    /*     bind "Ctrl o" { SwitchToMode "Normal"; } */
+    /*     bind "Ctrl s" { SwitchToMode "Scroll"; } */
+    /*     bind "d" { Detach; } */
+    /* } */
     tmux {
         bind "[" { SwitchToMode "Scroll"; }
         bind "Ctrl f" { Write 2; SwitchToMode "Normal"; }
         bind "s" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "v" { NewPane "Right"; SwitchToMode "Normal"; }
-        bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+        bind "m" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+        bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "c" { NewTab; SwitchToMode "Normal"; }
         bind "q" { CloseFocus; SwitchToMode "Normal"; }
         bind "," { SwitchToMode "RenameTab"; }
@@ -146,18 +147,18 @@ keybinds {
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
     }
-    shared_except "pane" "locked" {
-        bind "Ctrl p" { SwitchToMode "Pane"; }
-    }
+    /* shared_except "pane" "locked" { */
+    /*     bind "Ctrl p" { SwitchToMode "Pane"; } */
+    /* } */
     shared_except "resize" "locked" {
         bind "Ctrl n" { SwitchToMode "Resize"; }
     }
     shared_except "scroll" "locked" {
         bind "Ctrl s" { SwitchToMode "Scroll"; }
     }
-    shared_except "session" "locked" {
-        bind "Ctrl o" { SwitchToMode "Session"; }
-    }
+    /* shared_except "session" "locked" { */
+    /*     bind "Ctrl o" { SwitchToMode "Session"; } */
+    /* } */
     shared_except "tab" "locked" {
         bind "Ctrl t" { SwitchToMode "Tab"; }
     }
