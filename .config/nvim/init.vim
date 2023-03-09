@@ -63,3 +63,6 @@ inoremap <C-j><C-m> <++>
 nnoremap <C-j><C-j> /<++><Enter>"_cf>
 inoremap <C-j><C-j> <Esc>/<++><Enter>"_cf>
 
+" Zoom with new tab page
+nnoremap <C-w><C-m> :tab split<Enter>
+nnoremap <C-w>m :tab split<Enter>
