@@ -12,7 +12,12 @@ lspconfig.html.setup {}
 lspconfig.cssls.setup {}
 
 -- Java
-lspconfig.java_language_server.setup {}
+lspconfig.jdtls.setup {
+  -- TODO: remove when recursive root search works
+  root_dir = function()
+    return vim.fn.getcwd()
+  end
+}
 
 -- Python
 lspconfig.pylsp.setup {
@@ -66,7 +71,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
           close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
           border = 'single',
           source = 'always',
-          prefix = ' ',
+          prefix = '',
           scope = 'cursor'
         }
         vim.diagnostic.open_float(nil, opts)

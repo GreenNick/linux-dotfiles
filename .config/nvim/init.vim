@@ -9,6 +9,9 @@ lua require('language_servers')
 " Treesitter configuration
 lua require('treesitter')
 
+" Enable custom tabline
+lua require('tabline').setup()
+
 " Neomake configuration
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_javascript_standard_args = []
@@ -31,6 +34,9 @@ augroup END
 " Hide empty command bar
 set cmdheight=0
 
+" Use global statusline
+set laststatus=3
+
 " Replace tabs with spaces
 set tabstop=8
 set softtabstop=2
@@ -50,8 +56,10 @@ set updatetime=500
 nnoremap <Space> <Nop>
 let mapleader='<Space>'
 
-" Disable q: keybinding
+" Disable q:, q/, q? keybindings
 nnoremap q: <Nop>
+nnoremap q/ <Nop>
+nnoremap q? <Nop>
 
 " Execute default macro
 nnoremap <Enter> @q
@@ -66,3 +74,7 @@ inoremap <C-j><C-j> <Esc>/<++><Enter>"_cf>
 " Zoom with new tab page
 nnoremap <C-w><C-m> :tab split<Enter>
 nnoremap <C-w>m :tab split<Enter>
+
+" Tab navigation
+nnoremap <C-n> :tabnext<Enter>
+nnoremap <C-p> :tabprev<Enter>
