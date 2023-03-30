@@ -112,31 +112,20 @@ keybinds clear-defaults=true {
     /* } */
     tmux {
         bind "[" { SwitchToMode "Scroll"; }
-        bind "Ctrl f" { Write 2; SwitchToMode "Normal"; }
+        bind "Alt f" { Write 2; SwitchToMode "Normal"; }
         bind "s" { NewPane "Down"; SwitchToMode "Normal"; }
         bind "v" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "n" { NewPane; SwitchToMode "Normal"; }
         bind "m" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
         bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "c" { NewTab; SwitchToMode "Normal"; }
         bind "q" { CloseFocus; SwitchToMode "Normal"; }
-        /* bind "n" { GoToNextTab; SwitchToMode "Normal"; } */
-        /* bind "p" { GoToPreviousTab; SwitchToMode "Normal"; } */
-        /* bind "Left" { MoveFocus "Left"; SwitchToMode "Normal"; } */
-        /* bind "Right" { MoveFocus "Right"; SwitchToMode "Normal"; } */
-        /* bind "Down" { MoveFocus "Down"; SwitchToMode "Normal"; } */
-        /* bind "Up" { MoveFocus "Up"; SwitchToMode "Normal"; } */
-        /* bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; } */
-        /* bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; } */
-        /* bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; } */
-        /* bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; } */
         bind "e" { SwitchToMode "Move"; }
         bind "r" { SwitchToMode "Resize"; }
         bind "d" { Detach; }
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
-        /* bind "Ctrl q" { Quit; } */
-        /* bind "Alt n" { NewPane; } */
         bind "Alt n" { GoToNextTab; }
         bind "Alt p" { GoToPreviousTab; }
         bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
@@ -168,7 +157,7 @@ keybinds clear-defaults=true {
     /*     bind "Ctrl h" { SwitchToMode "Move"; } */
     /* } */
     shared_except "tmux" "locked" {
-        bind "Ctrl f" { SwitchToMode "Tmux"; }
+        bind "Alt f" { SwitchToMode "Tmux"; }
     }
 }
 

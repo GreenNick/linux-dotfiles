@@ -17,7 +17,7 @@ shell:
 # Font configuration
 font:
   normal:
-    family: FiraCode Nerd Font Mono
+    family: FiraCode Nerd Font
     style: Retina
   bold:
     style: Semibold

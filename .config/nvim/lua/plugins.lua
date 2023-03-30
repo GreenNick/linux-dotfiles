@@ -63,6 +63,16 @@ local plugins = {
     end
   },
 
+  -- Fuzzy searching
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      'BurntSushi/ripgrep',
+      'nvim-lua/plenary.nvim'
+    }
+  },
+
   -- Keybindings for code comments
   {
     'echasnovski/mini.comment',
@@ -116,14 +126,28 @@ local plugins = {
     config = function()
       require('mini.trailspace').setup()
     end
+  },
+
+  {
+    'nvim-neorg/neorg',
+    build = ':Neorg sync-parsers',
+    opts = {
+      load = {
+        ['core.defaults'] = {},
+        ['core.norg.concealer'] = {},
+        ['core.norg.dirman'] = {
+          config = {
+            workspaces = {
+              notes = '~/Notes'
+            }
+          }
+        }
+      }
+    },
+    dependencies = { 'nvim-lua/plenary.nvim' }
   }
 }
 
-local opts = {
-  checker = {
-    enabled = true
-  }
-}
-
+local opts = { }
 require('lazy').setup(plugins, opts)
 

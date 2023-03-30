@@ -54,7 +54,7 @@ set updatetime=500
 
 " Set <Leader> to <Space>
 nnoremap <Space> <Nop>
-let mapleader='<Space>'
+let mapleader=' '
 
 " Disable q:, q/, q? keybindings
 nnoremap q: <Nop>
@@ -72,9 +72,15 @@ nnoremap <C-j><C-j> /<++><Enter>"_cf>
 inoremap <C-j><C-j> <Esc>/<++><Enter>"_cf>
 
 " Zoom with new tab page
-nnoremap <C-w><C-m> :tab split<Enter>
-nnoremap <C-w>m :tab split<Enter>
+nnoremap <C-w><C-m> <cmd>tab split<Enter>
+nnoremap <C-w>m <cmd>tab split<Enter>
 
 " Tab navigation
-nnoremap <C-n> :tabnext<Enter>
-nnoremap <C-p> :tabprev<Enter>
+nnoremap <C-n> <cmd>tabnext<Enter>
+nnoremap <C-p> <cmd>tabprev<Enter>
+
+" Telescope finders
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<Enter>
+nnoremap <leader>f/ <cmd>lua require('telescope.builtin').live_grep()<Enter>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<Enter>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<Enter>

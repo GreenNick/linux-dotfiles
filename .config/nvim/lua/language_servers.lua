@@ -41,6 +41,13 @@ vim.diagnostic.config({
   severity_sort = false
 })
 
+-- Define custom diagnostic signs
+local signs = { Error = '', Warn = '', Hint = 'h', Info = '' }
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 -- LSP setup autocmd
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
@@ -69,7 +76,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local opts = {
           focusable = false,
           close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
-          border = 'single',
+          border = 'rounded',
           source = 'always',
           prefix = '',
           scope = 'cursor'
