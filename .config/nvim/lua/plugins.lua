@@ -141,6 +141,12 @@ local plugins = {
               notes = '~/Notes'
             }
           }
+        },
+        ['core.export'] = {},
+        ['core.export.markdown'] = {
+          config = {
+            extensions = 'all'
+          }
         }
       }
     },

@@ -21,6 +21,13 @@ call neomake#configure#automake('w')
 set termguicolors
 colorscheme catppuccin-macchiato
 
+" Save uppercase global variables
+" Save marks from up to 100 files
+" Do not save register contents
+" Max item size of 10 KiB
+" Disable effect of hlsearch
+set shada=!,'100,<0,s10,h
+
 " Enable dynamic line numbers
 set number
 augroup number_toggle
@@ -42,6 +49,9 @@ set tabstop=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+
+" Break lines at word boundaries
+set linebreak
 
 " Add scroll offset
 set scrolloff=3
@@ -65,11 +75,13 @@ nnoremap q? <Nop>
 nnoremap <Enter> @q
 
 " Insert marker tag
-inoremap <C-j><C-m> <++>
+" NOTE: <C-_> is the same as <C-/>
+inoremap <C-_><C-m> <++>
 
 " Jump to next marker tag in file
-nnoremap <C-j><C-j> /<++><Enter>"_cf>
-inoremap <C-j><C-j> <Esc>/<++><Enter>"_cf>
+" NOTE: <C-_> is the same as <C-/>
+nnoremap <C-_><C-_> /<++><Enter>"_cf>
+inoremap <C-_><C-_> <Esc>/<++><Enter>"_cf>
 
 " Zoom with new tab page
 nnoremap <C-w><C-m> <cmd>tab split<Enter>
@@ -78,6 +90,12 @@ nnoremap <C-w>m <cmd>tab split<Enter>
 " Tab navigation
 nnoremap <C-n> <cmd>tabnext<Enter>
 nnoremap <C-p> <cmd>tabprev<Enter>
+
+" Window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Telescope finders
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<Enter>
