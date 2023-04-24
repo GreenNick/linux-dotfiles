@@ -24,7 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget
+import os
+import subprocess
+from libqtile import bar, hook, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -36,12 +38,12 @@ keys = [
     # Move window focus
     Key([mod], "h", lazy.layout.left(),
         desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(),
-        desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(),
         desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(),
         desc="Move focus up"),
+    Key([mod], "l", lazy.layout.right(),
+        desc="Move focus to right"),
     Key([mod], "space", lazy.layout.next(),
         desc="Move window focus to other window"),
 
@@ -67,6 +69,8 @@ keys = [
     Key([mod], "n", lazy.layout.normalize(),
         desc="Reset all window sizes"),
 
+    # lazy.window.toggle_maximize()
+
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -80,7 +84,7 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(),
         desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(),
-        desc="Kill focused window"),
+        desc="Quit focused window"),
     Key([mod, "control"], "r", lazy.reload_config(),
         desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(),
@@ -117,9 +121,9 @@ for i, group in enumerate(groups):
 
 layouts = [
     layout.Tile(
-        # border_focus='#7287fd',  # Latte Lavender
-        # border_normal='#b7bdf8',  # Macchiato Lavender
-        border_width=0,
+        border_focus='#7287fd',  # Latte Lavender
+        border_normal='#b7bdf8',  # Macchiato Lavender
+        border_width=3,
         margin=4
     ),
     layout.Max(),
@@ -148,6 +152,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.Spacer(length=8),
                 widget.GroupBox(
                     highlight_method='block',
                     block_highlight_text_color='#24273a',  # Macchiato Base
@@ -160,12 +165,12 @@ screens = [
                 widget.Prompt(),
                 widget.Spacer(),
                 # widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ('#ff0000', '#ffffff'),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
+                # widget.Chord(
+                #     chords_colors={
+                #         "launch": ('#ff0000', '#ffffff'),
+                #     },
+                #     name_transform=lambda name: name.upper(),
+                # ),
                 # widget.TextBox("default config", name="default"),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
@@ -175,19 +180,18 @@ screens = [
                     charge_char='󰂄',
                     discharge_char='󰁾',
                     full_char='󰁹',
+                    show_short_text=False,
                     foreground='#cad3f5',
                     format='{char} {percent:2.0%}'
                 ),
                 widget.CurrentLayout(foreground='#cad3f5', fmt=' {}'),
-                widget.Clock(foreground='#cad3f5', format='󰸘 %a %b %d'),
-                widget.Clock(foreground='#cad3f5', format='󰅐 %I:%M')
+                widget.Clock(foreground='#cad3f5', format='󰸘 %a, %b %d'),
+                widget.Clock(foreground='#cad3f5', format='󰅐 %I:%M'),
+                widget.Spacer(length=8)
             ],
             36,
             margin=[8, 8, 4, 8],
-            # margin=[0, 0, 5, 0],
             background='#24273a',  # Macchiato Base
-            # border_width=[3, 3, 3, 3],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
         right=bar.Gap(4),
         left=bar.Gap(4),
@@ -230,6 +234,11 @@ auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
+
+# Run dex to autostart programs
+@hook.subscribe.startup_once
+def autostart():
+    subprocess.run(os.path.expandvars('$XDG_CONFIG_HOME/qtile/autostart.sh'))
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
