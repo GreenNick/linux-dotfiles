@@ -12,11 +12,6 @@ lua require('treesitter')
 " Enable custom tabline
 lua require('tabline').setup()
 
-" Neomake configuration
-let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_javascript_standard_args = []
-call neomake#configure#automake('w')
-
 " Setup Catppuccin color scheme
 set termguicolors
 colorscheme catppuccin-macchiato

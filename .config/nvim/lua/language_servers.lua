@@ -11,14 +11,6 @@ lspconfig.html.setup {}
 -- CSS
 lspconfig.cssls.setup {}
 
--- Java
-lspconfig.jdtls.setup {
-  -- TODO: remove when recursive root search works
-  root_dir = function()
-    return vim.fn.getcwd()
-  end
-}
-
 -- Python
 lspconfig.pylsp.setup {
   settings = {

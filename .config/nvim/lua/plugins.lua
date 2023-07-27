@@ -24,9 +24,6 @@ local plugins = {
     build = ':TSUpdate'
   },
 
-  -- Run external tools on events
-  'neomake/neomake',
-
   -- Catppuccin color schemes
   {
     'catppuccin/nvim',
@@ -73,6 +70,31 @@ local plugins = {
     }
   },
 
+  -- Java language server
+  'mfussenegger/nvim-jdtls',
+
+  -- Jump with 2-char search
+  {
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').opts.highlight_unlabeled_phase_one_targets = true
+      require('leap').add_default_mappings()
+    end,
+    dependencies = {
+      'tpope/vim-repeat'
+    }
+  },
+
+  -- Commands to work with "surroundings"
+  {
+    'kylechui/nvim-surround',
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup()
+    end
+  },
+
   -- Keybindings for code comments
   {
     'echasnovski/mini.comment',
@@ -112,45 +134,12 @@ local plugins = {
     end
   },
 
-  -- Commands to work with "surroundings"
-  {
-    'echasnovski/mini.surround',
-    config = function()
-      require('mini.surround').setup()
-    end
-  },
-
   -- Highlight trailing whitespace
   {
     'echasnovski/mini.trailspace',
     config = function()
       require('mini.trailspace').setup()
     end
-  },
-
-  {
-    'nvim-neorg/neorg',
-    build = ':Neorg sync-parsers',
-    opts = {
-      load = {
-        ['core.defaults'] = {},
-        ['core.concealer'] = {},
-        ['core.dirman'] = {
-          config = {
-            workspaces = {
-              notes = '~/Notes'
-            }
-          }
-        },
-        ['core.export'] = {},
-        ['core.export.markdown'] = {
-          config = {
-            extensions = 'all'
-          }
-        }
-      }
-    },
-    dependencies = { 'nvim-lua/plenary.nvim' }
   }
 }
 
