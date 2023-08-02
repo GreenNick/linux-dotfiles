@@ -56,7 +56,24 @@ local plugins = {
     'nvim-tree/nvim-tree.lua',
     tag = 'nightly',
     config = function()
-      require('nvim-tree').setup()
+      require('nvim-tree').setup({
+        hijack_cursor = true,
+        open_on_setup = true,
+        sync_root_with_cwd = true,
+        view = {
+          centralize_selection = true,
+          float = {
+            enable = true,
+            open_win_config = {
+              width = 50,
+              height = vim.api.nvim_win_get_height(0) - 2
+            }
+          }
+        },
+        renderer = {
+          group_empty = true
+        }
+      })
     end
   },
 

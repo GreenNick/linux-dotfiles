@@ -97,3 +97,6 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<Enter>
 nnoremap <leader>f/ <cmd>lua require('telescope.builtin').live_grep()<Enter>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<Enter>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<Enter>
+
+" Toggle Nvim-Tree
+nnoremap <leader>tt <cmd>lua require('nvim-tree.api').tree.toggle()<Enter>
