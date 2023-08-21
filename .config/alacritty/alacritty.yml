@@ -34,3 +34,4 @@ window:
     columns: 120
     lines: 36
   dynamic_padding: true
+  resize_increments: true

@@ -1,0 +1,39 @@
+(defwindow example
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "20px"
+    :width "90%"
+    :height "30px"
+    :anchor "top center")
+  :stacking "fg"
+  :reserve (struts
+    :distance "40px"
+    :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+  (greeter
+    :text "Say hello!"
+    :name "Nick"))
+
+(defwidget greeter [?text name]
+  (box
+    :orientation "horizontal"
+    :halign "center"
+    text
+    (button
+      :onclick "notify-send 'Hello' 'Hello, ${name}'"
+      "Greet")))
+
+(defwindow picker
+  :monitor 0
+  :geometry (geometry
+    :width "650px"
+    :width "500px"
+    :anchor "center center")
+  (picker))
+
+(defwidget picker []
+  (box
+    (input
+      :onchange "~/.config/eww/scripts/search.sh")))
