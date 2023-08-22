@@ -25,15 +25,29 @@
       :onclick "notify-send 'Hello' 'Hello, ${name}'"
       "Greet")))
 
+(defvar apps "[]")
+
 (defwindow picker
   :monitor 0
+  :focusable true
+  :windowtype "dialog"
   :geometry (geometry
-    :width "650px"
-    :width "500px"
+    :focusable true
+    :width "30%"
+    :height "30%"
     :anchor "center center")
   (picker))
 
 (defwidget picker []
   (box
+    :orientation "vertical"
     (input
-      :onchange "~/.config/eww/scripts/search.sh")))
+      :valign "start"
+      :onchange "$(~/.config/eww/scripts/search.sh)")
+    (scroll
+      (box
+        :orientation "vertical"
+        (for app in apps
+          (button
+            :onclick "$(${app.exec}) &"
+            {app.name}))))))
