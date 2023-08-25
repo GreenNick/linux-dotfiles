@@ -1,30 +1,4 @@
-(defwindow example
-  :monitor 0
-  :geometry (geometry
-    :x "0%"
-    :y "20px"
-    :width "90%"
-    :height "30px"
-    :anchor "top center")
-  :stacking "fg"
-  :reserve (struts
-    :distance "40px"
-    :side "top")
-  :windowtype "dock"
-  :wm-ignore false
-  (greeter
-    :text "Say hello!"
-    :name "Nick"))
-
-(defwidget greeter [?text name]
-  (box
-    :orientation "horizontal"
-    :halign "center"
-    text
-    (button
-      :onclick "notify-send 'Hello' 'Hello, ${name}'"
-      "Greet")))
-
+(defvar icon-theme "Tela")
 (defvar apps "[]")
 
 (defwindow picker
@@ -41,13 +15,15 @@
 (defwidget picker []
   (box
     :orientation "vertical"
+    :space-evenly false
     (input
-      :valign "start"
-      :onchange "$(~/.config/eww/scripts/search.sh)")
+      :onchange "$(~/.config/eww/scripts/search.sh ${icon-theme})")
     (scroll
+      :vexpand true
       (box
         :orientation "vertical"
         (for app in apps
           (button
             :onclick "$(${app.exec}) &"
-            {app.name}))))))
+            (label
+              :text {app.icon})))))))
