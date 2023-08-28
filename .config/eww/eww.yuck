@@ -24,6 +24,14 @@
         :orientation "vertical"
         (for app in apps
           (button
-            :onclick "$(${app.exec}) &"
-            (label
-              :text {app.icon})))))))
+            :onclick "eww close picker && $(${app.exec}) &"
+            (box
+              :orientation "horizontal"
+              :space-evenly false
+              (image
+                :path {app.icon}
+                :image-width 32
+                :image-height 32)
+              (label
+                :text {app.name}
+                :limit-width 70))))))))
