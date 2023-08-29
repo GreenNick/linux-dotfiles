@@ -17,7 +17,7 @@
     :orientation "vertical"
     :space-evenly false
     (input
-      :onchange "$(~/.config/eww/scripts/search.sh ${icon-theme})")
+      :onchange "~/.config/eww/scripts/filter.sh {}")
     (scroll
       :vexpand true
       (box

@@ -10,7 +10,7 @@ xdg_subdirs() {
 
 find_icon_path () {
   THEME=$1
-  if [ -f $2 ]; then
+  if [ -f "$2" ]; then
     ICON_PATH=$2
   fi
 
@@ -23,17 +23,17 @@ find_icon_path () {
     ICON_PATH=$(xdg_subdirs "icons/$THEME" \
       | while read -r DIR; do [ -d "$DIR" ] && echo "$DIR"; done \
       | while read -r DIR; do
-        echo $(find "$DIR/scalable" -name "$2.svg" \
-          || find "$DIR/32" -name "$2.svg" -or -name "$2.png")
+        find "$DIR/scalable" -name "$2.svg" \
+          || find "$DIR/32" -name "$2.svg" -or -name "$2.png"
       done)
   fi
 
-  if [ -z "$ICON_PATH" ] && [ $THEME != "hicolor" ]; then
-    find_icon_path hicolor $2
+  if [ -z "$ICON_PATH" ] && [ "$THEME" != "hicolor" ]; then
+    find_icon_path hicolor "$2"
   elif [ -z "$ICON_PATH" ]; then
-    echo $2
+    echo "$2"
   else
-    echo $ICON_PATH | awk '{ print $1 }'
+    echo "$ICON_PATH" | head -n 1
   fi
 }
 
@@ -41,16 +41,13 @@ xdg_desktop_parse() {
   PARSE=false
   HIDDEN=false
   NO_DISPLAY=false
-  while read -r LINE;
-  do
-    if [ "$LINE" = "[Desktop Entry]" ];
-    then
+  while read -r LINE; do
+    if [ "$LINE" = "[Desktop Entry]" ]; then
       PARSE=true
       continue
     fi
 
-    if [ $PARSE = "true" ];
-    then
+    if [ $PARSE = "true" ]; then
       case $LINE in
         \[*\])
           break;;
@@ -68,8 +65,7 @@ xdg_desktop_parse() {
     fi
   done < "$1"
 
-  if [ "$HIDDEN" = "true" ] || [ "$NO_DISPLAY" = "true" ];
-  then
+  if [ "$HIDDEN" = "true" ] || [ "$NO_DISPLAY" = "true" ]; then
     return
   fi
 
@@ -80,11 +76,13 @@ xdg_desktop_parse() {
     "$NAME" "$ICON" "$EXEC"
 }
 
-ICON_THEME=$1
 APPS=$(xdg_subdirs "applications" \
   | while read -r DIR; do [ -d "$DIR" ] && echo "$DIR"; done \
   | xargs -I{} find {} -name "*.desktop" \
-  | while read -r FILE; do xdg_desktop_parse "$FILE" "$ICON_THEME"; done \
+  | while read -r FILE; do xdg_desktop_parse "$FILE" "$1"; done \
   | awk '{ s = (NR == 1 ? $0 : s", "$0) } END { print "["s"]" }')
 
-eww update apps="$APPS"
+if [ ! -z "$XDG_CACHE_HOME" ]; then
+  mkdir -p "$XDG_CACHE_HOME/eww-launcher"
+  echo "$APPS" > "$XDG_CACHE_HOME/eww-launcher/desktop_entries"
+fi
