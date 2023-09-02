@@ -1,7 +1,7 @@
 (defvar icon-theme "Tela")
 (defvar apps "[]")
 
-(defwindow picker
+(defwindow eww-launcher
   :monitor 0
   :focusable true
   :windowtype "dialog"
@@ -10,28 +10,33 @@
     :width "30%"
     :height "30%"
     :anchor "center center")
-  (picker))
+  (eww-launcher))
 
-(defwidget picker []
+(defwidget eww-launcher []
   (box
     :orientation "vertical"
     :space-evenly false
     (input
-      :onchange "~/.config/eww/scripts/filter.sh {}")
+      :onchange "scripts/filter.sh {}")
     (scroll
       :vexpand true
       (box
         :orientation "vertical"
+        :space-evenly false
         (for app in apps
-          (button
-            :onclick "eww close picker && $(${app.exec}) &"
-            (box
-              :orientation "horizontal"
-              :space-evenly false
-              (image
-                :path {app.icon}
-                :image-width 32
-                :image-height 32)
-              (label
-                :text {app.name}
-                :limit-width 70))))))))
+          (app-entry :app-json app))))))
+
+(defwidget app-entry [app-json]
+  (button
+    :onclick "eww close eww-launcher && $(${app-json.exec}) &"
+    (box
+      :orientation "horizontal"
+      :space-evenly false
+      (image
+        :path {app-json.icon}
+        :image-width 32
+        :image-height 32)
+      (label
+        :text {app-json.name}
+        :limit-width 70))))
+

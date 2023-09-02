@@ -1,4 +1,6 @@
 #!/bin/sh
+. "$XDG_CONFIG_HOME/eww/scripts/.env"
+
 xdg_subdirs() {
   echo "$XDG_DATA_HOME:$XDG_DATA_DIRS" \
     | awk -v dir="$1" '{
@@ -82,7 +84,6 @@ APPS=$(xdg_subdirs "applications" \
   | while read -r FILE; do xdg_desktop_parse "$FILE" "$1"; done \
   | awk '{ s = (NR == 1 ? $0 : s", "$0) } END { print "["s"]" }')
 
-if [ ! -z "$XDG_CACHE_HOME" ]; then
-  mkdir -p "$XDG_CACHE_HOME/eww-launcher"
-  echo "$APPS" > "$XDG_CACHE_HOME/eww-launcher/desktop_entries"
-fi
+mkdir -p "$CACHE_DIR/eww-launcher"
+echo "$APPS" > "$CACHE_FILE"
+
