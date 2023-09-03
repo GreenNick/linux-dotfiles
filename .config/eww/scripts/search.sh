@@ -1,5 +1,6 @@
 #!/bin/sh
-. "$XDG_CONFIG_HOME/eww/scripts/.env"
+SCRIPT_DIR="$XDG_CONFIG_HOME/eww/scripts"
+. "$SCRIPT_DIR/.env"
 
 xdg_subdirs() {
   echo "$XDG_DATA_HOME:$XDG_DATA_DIRS" \

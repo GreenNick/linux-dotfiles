@@ -14,10 +14,23 @@
 
 (defwidget eww-launcher []
   (box
+    :class "launcher-box"
     :orientation "vertical"
     :space-evenly false
-    (input
-      :onchange "scripts/filter.sh {}")
+    (box
+      :space-evenly false
+      (label
+        :class "search-mode"
+        :text "Apps")
+      (input
+        :class "search-input"
+        :hexpand true
+        :onchange "scripts/filter.sh {}"
+        :onaccept "eww close eww-launcher && $(${apps[0].exec}) &")
+      (button
+        :class "refresh"
+        :onclick "scripts/search.sh ${icon-theme}"
+        ""))
     (scroll
       :vexpand true
       (box
@@ -28,6 +41,7 @@
 
 (defwidget app-entry [app-json]
   (button
+    :class "app-entry"
     :onclick "eww close eww-launcher && $(${app-json.exec}) &"
     (box
       :orientation "horizontal"
@@ -38,5 +52,5 @@
         :image-height 32)
       (label
         :text {app-json.name}
-        :limit-width 70))))
+        :limit-width 60))))
 

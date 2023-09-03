@@ -33,6 +33,7 @@ from libqtile.utils import guess_terminal
 
 mod = "mod4"
 terminal = guess_terminal()
+launcher = os.path.expandvars('$XDG_CONFIG_HOME/eww/scripts/eww-launcher.sh')
 
 keys = [
     # Move window focus
@@ -89,7 +90,7 @@ keys = [
         desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(),
         desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn('rofi -modes "drun,run,window" -show drun'),
+    Key([mod], "r", lazy.spawn(launcher),
         desc="Run rofi launcher"),
 ]
 
@@ -107,17 +108,15 @@ groups = [
 ]
 
 for i, group in enumerate(groups):
-    keys.extend(
-        [
-            # Switch to group by index
-            Key([mod], str(i + 1), lazy.group[group.name].toscreen(),
-                desc=f'Switch to group {group.name}'),
-            # Move focused window to group by index
-            Key([mod, 'shift'], str(i + 1),
-                lazy.window.togroup(group.name, switch_group=True),
-                desc=f'Move focused window to group {group.name}')
-        ]
-    )
+    keys.extend([
+        # Switch to group by index
+        Key([mod], str(i + 1), lazy.group[group.name].toscreen(),
+            desc=f'Switch to group {group.name}'),
+        # Move focused window to group by index
+        Key([mod, 'shift'], str(i + 1),
+            lazy.window.togroup(group.name, switch_group=False),
+            desc=f'Move focused window to group {group.name}')
+    ])
 
 layouts = [
     layout.Tile(
@@ -127,19 +126,31 @@ layouts = [
         margin=4
     ),
     layout.Max(),
-    layout.Floating(),
-    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+]
+
+floating_layout = layout.Floating(
+    border_focus='#7287fd',  # Latte Lavender
+    border_normal='#b7bdf8',  # Macchiato Lavender
+    border_width=3,
+    float_rules=[
+        # Run the utility of `xprop` to see the wm class and name of an X client.
+        *layout.Floating.default_float_rules,
+        Match(wm_class="confirmreset"),  # gitk
+        Match(wm_class="makebranch"),  # gitk
+        Match(wm_class="maketag"),  # gitk
+        Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(title="branchdialog"),  # gitk
+        Match(title="pinentry"),  # GPG key password entry
+    ]
+)
+
+# Drag floating layouts.
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
+         start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
+         start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
 widget_defaults = dict(
@@ -165,17 +176,6 @@ screens = [
                 ),
                 widget.Prompt(),
                 widget.Spacer(),
-                # widget.WindowName(),
-                # widget.Chord(
-                #     chords_colors={
-                #         "launch": ('#ff0000', '#ffffff'),
-                #     },
-                #     name_transform=lambda name: name.upper(),
-                # ),
-                # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Battery(
                     charge_char='󰂄',
@@ -201,39 +201,17 @@ screens = [
     ),
 ]
 
-# Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
-]
-
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
+dgroups_app_rules = []
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(
-    float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
-        *layout.Floating.default_float_rules,
-        Match(wm_class="confirmreset"),  # gitk
-        Match(wm_class="makebranch"),  # gitk
-        Match(wm_class="maketag"),  # gitk
-        Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(title="branchdialog"),  # gitk
-        Match(title="pinentry"),  # GPG key password entry
-    ]
-)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
-
-# If things like steam games want to auto-minimize themselves when losing
-# focus, should we respect this or not?
+# Allow applications to auto-minimize after losing focus
 auto_minimize = True
-
-# When using the Wayland backend, this can be used to configure input devices.
+# Configure input devices on Wayland
 wl_input_rules = None
 
 # Run dex to autostart programs
