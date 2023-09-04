@@ -17,18 +17,29 @@ find_icon_path () {
     ICON_PATH=$2
   fi
 
-  if [ -d "$HOME/.icons/$THEME" ]; then
-    ICON_PATH=$(find "$HOME/.icons/$THEME/scalable" -name "$2.svg" \
-      || find "$HOME/.icons/$THEME/32" -name "$2.svg" -or -name "$2.png")
+  if [ -z "$ICON_PATH" ] && [ -d "$DOT_ICONS" ]; then
+    DIR="$HOME/.icons/$THEME"
+    ICON_PATH=$(find "$DIR" -path "$DIR/scalable*/$2.svg")
+    ICON_PATH=${ICON_PATH:-$(find "$DIR" -path "$DIR/32*/$2.svg" \
+                                      -o -path "$DIR/32*/$2.png")}
   fi
 
   if [ -z "$ICON_PATH" ]; then
     ICON_PATH=$(xdg_subdirs "icons/$THEME" \
-      | while read -r DIR; do [ -d "$DIR" ] && echo "$DIR"; done \
       | while read -r DIR; do
-        find "$DIR/scalable" -name "$2.svg" \
-          || find "$DIR/32" -name "$2.svg" -or -name "$2.png"
-      done)
+          if [ ! -d "$DIR" ]; then
+            continue
+          fi
+
+          CURR=$(find "$DIR" -path "$DIR/scalable*/$2.svg")
+          CURR=${CURR:-$(find "$DIR" -path "$DIR/32*/$2.svg" \
+                                  -o -path "$DIR/32*/$2.png")}
+
+          if [ -n "$CURR" ]; then
+            echo "$CURR"
+            break
+          fi
+        done)
   fi
 
   if [ -z "$ICON_PATH" ] && [ "$THEME" != "hicolor" ]; then
