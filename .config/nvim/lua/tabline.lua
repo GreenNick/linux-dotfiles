@@ -6,7 +6,7 @@ module.tabline = function()
   for tab = 1, vim.fn.tabpagenr('$') do
     if tab == vim.fn.tabpagenr() then
       s = s .. '%#TabLineSel#'
-    else 
+    else
       s = s .. '%#TabLine#'
     end
     s = s .. ' ' .. module.label(tab) .. ' '
@@ -23,10 +23,10 @@ module.label = function(tab)
 
   for _, buf in ipairs(buflist) do
     if vim.fn.getbufvar(buf, '&modified') == 1 then
-      label = label .. '+'  
+      label = label .. '+'
       break
     end
-  end  
+  end
 
   local cwd = vim.fn.getcwd(winnr, tab)
   local filename = vim.fn.bufname(buflist[winnr])

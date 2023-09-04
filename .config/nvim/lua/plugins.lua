@@ -15,14 +15,71 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-  -- Language Server Protocol configurations
-  'neovim/nvim-lspconfig',
-
   -- Language parsing and syntax highlighting
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate'
   },
+
+  -- Language Server Protocol configuration
+  {
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
+    config = function()
+      local lsp = require('lsp-zero').preset({})
+      lsp.on_attach(function(_, bufnr)
+        -- Set default keybindings
+        lsp.default_keymaps({ buffer = bufnr })
+        -- Show diagnostics on hover
+        vim.api.nvim_create_autocmd('CursorHold', {
+          buffer = bufnr,
+          callback = function()
+            local opts = {
+              focusable = false,
+              close_events = {
+                'BufLeave',
+                'CursorMoved',
+                'InsertEnter',
+                'FocusLost'
+              },
+              border = 'rounded',
+              source = 'always',
+              prefix = '',
+              scope = 'cursor'
+            }
+            vim.diagnostic.open_float(nil, opts)
+          end
+        })
+      end)
+      -- Disable virtual text
+      vim.diagnostic.config({
+        virtual_text = false
+      })
+      -- Define custom diagnostic signs
+      lsp.set_sign_icons({
+        error = '',
+        warn = '',
+        hint = '',
+        info = ''
+      })
+      lsp.setup()
+      -- Load language configurations
+      require('language_servers')
+    end,
+    dependencies = {
+      -- LSP Support
+      'neovim/nvim-lspconfig',
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      -- Autocompletion
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+    }
+  },
+
+  -- Java language server
+  'mfussenegger/nvim-jdtls',
 
   -- Catppuccin color schemes
   {
@@ -33,16 +90,36 @@ local plugins = {
         integrations = {
           gitsigns = true,
           leap = true,
+          mason = true,
           mini = true,
+          native_lsp = {
+            enabled = true,
+            virtual_text = {
+              errors = { "italic" },
+              hints = { "italic" },
+              warnings = { "italic" },
+              information = { "italic" },
+            },
+            underlines = {
+              errors = { "underline" },
+              hints = { "underline" },
+              warnings = { "underline" },
+              information = { "underline" },
+            },
+            inlay_hints = {
+              background = true,
+            },
+          },
           nvimtree = true,
+          telescope = {
+            enabled = true
+          },
           treesitter = true
         }
       })
-    end
+    end,
+    priority = 1000
   },
-
-  -- Icons for nvim
-  'nvim-tree/nvim-web-devicons',
 
   -- Git integration
   {
@@ -77,7 +154,6 @@ local plugins = {
     config = function()
       require('nvim-tree').setup({
         hijack_cursor = true,
-        open_on_setup = true,
         sync_root_with_cwd = true,
         view = {
           centralize_selection = true,
@@ -93,21 +169,29 @@ local plugins = {
           group_empty = true
         }
       })
-    end
+    end,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    }
   },
 
   -- Fuzzy searching
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
+    config = function()
+      require('telescope').load_extension('fzf')
+    end,
     dependencies = {
-      'BurntSushi/ripgrep',
-      'nvim-lua/plenary.nvim'
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'nvim-treesitter/nvim-treesitter',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make'
+      }
     }
   },
-
-  -- Java language server
-  'mfussenegger/nvim-jdtls',
 
   -- Jump with 2-char search
   {
@@ -148,6 +232,5 @@ local plugins = {
   }
 }
 
-local opts = { }
+local opts = {}
 require('lazy').setup(plugins, opts)
-

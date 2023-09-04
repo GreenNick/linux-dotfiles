@@ -3,9 +3,6 @@
 " Enable plugins with packer
 lua require('plugins')
 
-" Add language servers
-lua require('language_servers')
-
 " Treesitter configuration
 lua require('treesitter')
 
@@ -44,6 +41,16 @@ set tabstop=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+
+" Enable smart indentation
+set smartindent
+
+" Enable line width marker
+set colorcolumn=80
+
+" Highlight search results
+set incsearch
+set hlsearch
 
 " Break lines at word boundaries
 set linebreak
