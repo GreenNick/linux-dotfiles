@@ -121,6 +121,14 @@ local plugins = {
     priority = 1000
   },
 
+  -- Highlight color strings
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function ()
+      require('colorizer').setup()
+    end
+  },
+
   -- Git integration
   {
     'lewis6991/gitsigns.nvim',
