@@ -12,6 +12,7 @@ lua require('tabline').setup()
 " Setup Catppuccin color scheme
 set termguicolors
 colorscheme catppuccin-macchiato
+lua require('colorizer').setup()
 
 " Save uppercase global variables
 " Save marks from up to 100 files
