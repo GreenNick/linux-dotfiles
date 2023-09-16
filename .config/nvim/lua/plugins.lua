@@ -81,6 +81,14 @@ local plugins = {
   -- Java language server
   'mfussenegger/nvim-jdtls',
 
+  -- LaTeX support
+  {
+    'lervag/vimtex',
+    config = function()
+      vim.g.vimtex_view_method = 'zathura'
+    end
+  },
+
   -- Catppuccin color schemes
   {
     'catppuccin/nvim',
