@@ -6,15 +6,21 @@ export EDITOR="nvim"
 export VISUAL="$HOME/Scripts/vimsplit"
 export PAGER="less"
 
-# Set default XDG directories
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
+# XDG user directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# XDG system directories
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_DIRS="/etc/xdg"
 
 # Add ~/.local/bin to path
-[[ "$PATH" != *"$HOME/.local/bin"* ]] \
-  && export PATH=$PATH:$HOME/.local/bin \
+case "$PATH" in
+  *"$HOME/.local/bin"*) ;;
+  *) export PATH="$PATH:$HOME/.local/bin" ;;
+esac
 
 # Home directory clean-up
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
