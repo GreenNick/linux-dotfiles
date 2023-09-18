@@ -29,8 +29,12 @@
         :onaccept "eww close eww-launcher && $(${apps[0].exec}) &")
       (button
         :class "refresh"
-        :onclick "scripts/search.sh ${icon-theme}"
-        ""))
+        :onclick "$(scripts/search.sh ${icon-theme})"
+        "")
+      (button
+        :class "close"
+        :onclick "eww close eww-launcher"
+        "󰅖"))
     (scroll
       :vexpand true
       (box

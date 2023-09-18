@@ -26,42 +26,53 @@ $base: #24273a;
 $mantle: #1e2030;
 $crust: #181926;
 
-*:focus {
-  box-shadow: none;
+* {
+  all: unset;
 }
 
 .launcher-box {
   font-family: NotoSans Nerd Font Medium;
   background-color: $base;
+  padding: 6px;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
 
   .search-mode {
     color: $base;
     background-color: $blue;
     border-radius: 8px;
-    padding: 4px 12px;
-    margin: 6px 0 0 6px;
+    padding: 8px 16px;
   }
 
   .search-input {
     color: $text;
     background-color: $surface0;
     border-radius: 8px;
-    margin: 6px 6px 0;
+    margin-left: 6px;
+    padding: 8px;
   }
 
   .refresh {
     color: $base;
     background-color: $green;
     font-size: 20px;
-    border-radius: 8px;
-    margin: 6px 6px 0 0;
+    margin-left: 6px;
+  }
+
+  .close {
+    color: $base;
+    background-color: $red;
+    font-size: 20px;
+    margin-left: 6px;
   }
 
   .app-entry {
     color: $text;
     background-color: $base;
-    border-radius: 8px;
-    margin: 6px;
+    margin-top: 6px;
 
     image {
       margin-right: 8px;
