@@ -26,14 +26,13 @@
 
 import os
 import subprocess
-from libqtile import bar, hook, layout, widget
+from libqtile import bar, hook, layout, widget, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 
 mod = "mod4"
-terminal = guess_terminal()
 launcher = os.path.expandvars('$XDG_CONFIG_HOME/eww/scripts/eww-launcher.sh')
+terminal = 'foot' if qtile.core.name == 'wayland' else 'alacritty'
 
 keys = [
     # Move window focus
@@ -99,7 +98,8 @@ groups = [
     Group('www',
           matches=[Match(wm_class='firefox')]),
     Group('dev',
-          matches=[Match(wm_class='Alacritty')]),
+          matches=[Match(wm_class='Alacritty'),
+                   Match(wm_class='foot')]),
     Group('fun',
           matches=[Match(wm_class='Steam')]),
     Group('irc',
