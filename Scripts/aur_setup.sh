@@ -26,7 +26,7 @@ EOF
 append_if_missing "$XDG_CONFIG_HOME/shell/system" "$(cat << EOF
 
 # Run aurutils with aur user
-alias aur="sudo -u aur aur"
+alias aur="sudo --preserve-env=AUR_PAGER -u aur aur"
 EOF
 )"
 

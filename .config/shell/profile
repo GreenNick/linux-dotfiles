@@ -5,6 +5,7 @@ export BROWSER="firefox"
 export EDITOR="nvim"
 export VISUAL="$HOME/Scripts/vimsplit"
 export PAGER="less"
+export AUR_PAGER="nnn"
 
 # XDG user directories
 export XDG_CONFIG_HOME="$HOME/.config"
