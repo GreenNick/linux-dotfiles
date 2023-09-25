@@ -40,11 +40,11 @@
       (button
         :class {ws == "wl" ? "refresh" : "refresh round"}
         :onclick "$(scripts/search.sh ${icon-theme})"
-        "")
+        "󰑐")
       (button
         :class {ws == "wl" ? "close" : "close round"}
         :onclick "eww close eww-launcher-${ws}"
-        "󰅖"))
+        "󰖭"))
     (scroll
       :vexpand true
       (box

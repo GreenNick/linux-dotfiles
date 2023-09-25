@@ -31,7 +31,11 @@ $crust: #181926;
 }
 
 .round {
-  border-radius: 12px;
+  border-radius: 8px;
+}
+
+.launcher-box .round {
+  border-radius: 16px;
 }
 
 .launcher-box {
