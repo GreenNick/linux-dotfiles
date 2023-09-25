@@ -1,39 +1,49 @@
-(defvar icon-theme "Tela")
+(include "config.yuck")
+
 (defvar apps "[]")
 
-(defwindow eww-launcher
+(defwindow eww-launcher-x11
   :monitor 0
   :focusable true
-  :windowtype "dialog"
+  :windowtype "dock"
   :geometry (geometry
-    :focusable true
     :width "30%"
     :height "30%"
     :anchor "center center")
-  (eww-launcher))
+  (eww-launcher :ws "x11"))
 
-(defwidget eww-launcher []
+(defwindow eww-launcher-wl
+  :monitor 0
+  :focusable true
+  :stacking "overlay"
+  :geometry (geometry
+    :width "30%"
+    :height "30%"
+    :anchor "center center")
+  (eww-launcher :ws "wl"))
+
+(defwidget eww-launcher [ws]
   (box
-    :class "launcher-box"
+    :class {ws == "wl" ? "launcher-box" : "launcher-box round"}
     :orientation "vertical"
     :space-evenly false
     (box
       :space-evenly false
       (label
-        :class "search-mode"
+        :class {ws == "wl" ? "search-mode" : "search-mode round"}
         :text "Apps")
       (input
-        :class "search-input"
+        :class {ws == "wl" ? "search-input" : "search-input round"}
         :hexpand true
         :onchange "scripts/filter.sh {}"
-        :onaccept "eww close eww-launcher && $(${apps[0].exec}) &")
+        :onaccept "eww close eww-launcher-${ws} && $(${apps[0].exec}) &")
       (button
-        :class "refresh"
+        :class {ws == "wl" ? "refresh" : "refresh round"}
         :onclick "$(scripts/search.sh ${icon-theme})"
         "")
       (button
-        :class "close"
-        :onclick "eww close eww-launcher"
+        :class {ws == "wl" ? "close" : "close round"}
+        :onclick "eww close eww-launcher-${ws}"
         "󰅖"))
     (scroll
       :vexpand true
@@ -41,12 +51,12 @@
         :orientation "vertical"
         :space-evenly false
         (for app in apps
-          (app-entry :app-json app))))))
+          (app-entry :app-json app :ws ws))))))
 
-(defwidget app-entry [app-json]
+(defwidget app-entry [app-json ws]
   (button
     :class "app-entry"
-    :onclick "eww close eww-launcher && $(${app-json.exec}) &"
+    :onclick "eww close eww-launcher-${ws} && $(${app-json.exec}) &"
     (box
       :orientation "horizontal"
       :space-evenly false

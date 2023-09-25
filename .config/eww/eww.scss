@@ -30,27 +30,29 @@ $crust: #181926;
   all: unset;
 }
 
+.round {
+  border-radius: 12px;
+}
+
 .launcher-box {
   font-family: NotoSans Nerd Font Medium;
   background-color: $base;
+  border: 3px solid $mauve;
   padding: 6px;
 
   button {
     padding: 8px 16px;
-    border-radius: 8px;
   }
 
   .search-mode {
     color: $base;
     background-color: $blue;
-    border-radius: 8px;
     padding: 8px 16px;
   }
 
   .search-input {
     color: $text;
     background-color: $surface0;
-    border-radius: 8px;
     margin-left: 6px;
     padding: 8px;
   }

@@ -8,4 +8,16 @@ if [ ! -s "$CACHE_FILE" ]; then
 fi
 
 "$SCRIPT_DIR/filter.sh"
-eww open eww-launcher
+case "$1" in
+  --wayland)
+    eww open eww-launcher-wl
+    break
+    ;;
+  --x11)
+    eww open eww-launcher-x11
+    break
+    ;;
+  *)
+    echo "Invalid argument supplied, must be '--wayland' or '--x11'"
+    ;;
+esac

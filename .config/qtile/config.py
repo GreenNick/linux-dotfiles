@@ -27,12 +27,18 @@
 import os
 import subprocess
 from libqtile import bar, hook, layout, widget, qtile
+from libqtile.backend.wayland import InputConfig
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
 mod = "mod4"
-launcher = os.path.expandvars('$XDG_CONFIG_HOME/eww/scripts/eww-launcher.sh')
-terminal = 'foot' if qtile.core.name == 'wayland' else 'alacritty'
+config_home = os.path.expandvars('$XDG_CONFIG_HOME')
+if qtile.core.name == 'wayland':
+    launcher = f'{config_home}/eww/scripts/eww-launcher.sh --wayland'
+    terminal = 'foot'
+else:
+    launcher = f'{config_home}/eww/scripts/eww-launcher.sh --x11'
+    terminal = 'alacritty'
 
 keys = [
     # Move window focus
@@ -83,6 +89,8 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(),
         desc="Toggle between layouts"),
+    Key([mod], 'm', lazy.window.toggle_maximize(),
+        desc='Maximize window'),
     Key([mod], "q", lazy.window.kill(),
         desc="Quit focused window"),
     Key([mod, "control"], "r", lazy.reload_config(),
@@ -90,7 +98,7 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(),
         desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn(launcher),
-        desc="Run rofi launcher"),
+        desc="Run application launcher"),
 ]
 
 groups = [
@@ -171,19 +179,19 @@ screens = [
                     this_current_screen_border='#c6a0f6',  # Macchiato Mauve
                     active='#cad3f5',  # Macchiato Text
                     inactive='#6e738d',  # Macchiato Overlay0
-                    urgent_text='#FF0000',
+                    urgent_text='#ed8796',
                     spacing=0
                 ),
                 widget.Prompt(),
                 widget.Spacer(),
-                widget.Systray(),
                 widget.Battery(
-                    charge_char='󰂄',
-                    discharge_char='󰁾',
-                    full_char='󰁹',
+                    charge_char='󱐋 ',
+                    discharge_char='',
+                    full_char='',
                     show_short_text=False,
                     foreground='#cad3f5',
-                    format='{char} {percent:2.0%}'
+                    low_foreground='#ed8796',
+                    format='{char}  {percent:2.0%}'
                 ),
                 widget.CurrentLayout(foreground='#cad3f5', fmt=' {}'),
                 widget.Clock(foreground='#cad3f5', format='󰸘 %a, %b %d'),
@@ -212,12 +220,22 @@ reconfigure_screens = True
 # Allow applications to auto-minimize after losing focus
 auto_minimize = True
 # Configure input devices on Wayland
-wl_input_rules = None
+wl_input_rules = {
+    'type:touchpad': InputConfig(
+        click_method='clickfinger',
+        natural_scroll=True,
+        tap=True
+    ),
+    'type:keyboard': InputConfig(
+        kb_layout='us',
+        kb_options='caps:ctrl_modifier'
+    )
+}
 
 # Run dex to autostart programs
 @hook.subscribe.startup_once
 def autostart():
-    subprocess.run(os.path.expandvars('$XDG_CONFIG_HOME/qtile/autostart.sh'))
+    subprocess.run(f'{config_home}/qtile/autostart.sh')
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
