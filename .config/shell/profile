@@ -3,19 +3,19 @@
 # Default programs
 export BROWSER="firefox"
 export EDITOR="nvim"
-export VISUAL="$HOME/Scripts/vimsplit"
+export VISUAL="nvim"
 export PAGER="less"
 export AUR_PAGER="nnn"
+
+# Application theme
+export GTK_THEME="Catppuccin-Latte-Standard-Lavender-Light"
+export QT_STYLE_OVERRIDE="kvantum"
 
 # XDG user directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
-
-# XDG system directories
-export XDG_DATA_DIRS="/usr/local/share:/usr/share"
-export XDG_CONFIG_DIRS="/etc/xdg"
 
 # Add ~/.local/bin to path
 case "$PATH" in
@@ -31,3 +31,11 @@ export LC_COLLATE="C"
 
 # Pfetch configuration
 export PF_INFO="ascii title os kernel memory uptime shell editor palette"
+
+# Run firefox in wayland mode
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    export MOZ_ENABLE_WAYLAND=1
+fi
+
+# Krita theme
+export KRITA_NO_STYLE_OVERRIDE=1

@@ -26,19 +26,24 @@
 
 import os
 import subprocess
-from libqtile import bar, hook, layout, widget, qtile
+from libqtile import bar, hook, layout, qtile
 from libqtile.backend.wayland import InputConfig
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
+from qtile_extras import widget
 
 mod = "mod4"
+home = os.path.expandvars('$HOME')
 config_home = os.path.expandvars('$XDG_CONFIG_HOME')
+screenshot_dir = f'{home}/Pictures/screenshots'
 if qtile.core.name == 'wayland':
     launcher = f'{config_home}/eww/scripts/eww-launcher.sh --wayland'
     terminal = 'foot'
+    screenshot = f'grim -g "$(slurp)" {screenshot_dir}/$(date +"%F@%T.png")'
 else:
     launcher = f'{config_home}/eww/scripts/eww-launcher.sh --x11'
     terminal = 'alacritty'
+    screenshot = ''
 
 keys = [
     # Move window focus
@@ -85,6 +90,8 @@ keys = [
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal),
         desc="Launch terminal"),
+    Key([mod], "s", lazy.spawn(screenshot, shell=True),
+        desc="Take a screenshot"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(),
@@ -99,12 +106,18 @@ keys = [
         desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawn(launcher),
         desc="Run application launcher"),
+
+    Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -q sset Master 5%+'),
+        desc=''),
+    Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -q sset Master 5%-'),
+        desc=''),
 ]
 
 groups = [
     Group('top'),
     Group('www',
-          matches=[Match(wm_class='firefox')]),
+          matches=[Match(wm_class='firefox'),
+                   Match(wm_class='floorp')]),
     Group('dev',
           matches=[Match(wm_class='Alacritty'),
                    Match(wm_class='foot')]),
@@ -165,41 +178,93 @@ widget_defaults = dict(
     font='NotoSans Nerd Font Medium',
     fontsize=14,
     padding=4,
+    theme_path=f'{config_home}/qtile/icons'
 )
 extension_defaults = widget_defaults.copy()
+
+decor_group = {
+    "decorations": [
+        widget.decorations.RectDecoration(
+            colour="#363a4f",
+            radius=12,
+            filled=True,
+            padding_y=5,
+            group=True
+        )
+    ],
+    'padding': 10
+}
+
+decor = {
+    "decorations": [
+        widget.decorations.RectDecoration(
+            colour="#363a4f",
+            radius=12,
+            filled=True,
+            padding_y=5
+        )
+    ],
+    'padding': 10
+}
 
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.Spacer(length=8),
+                widget.Spacer(length=4),
                 widget.GroupBox(
-                    highlight_method='block',
+                    highlight_method='text',
                     block_highlight_text_color='#24273a',  # Macchiato Base
                     this_current_screen_border='#c6a0f6',  # Macchiato Mauve
                     active='#cad3f5',  # Macchiato Text
                     inactive='#6e738d',  # Macchiato Overlay0
                     urgent_text='#ed8796',
-                    spacing=0
+                    padding_x=3,
+                    rounded=False,
+                    **decor_group
                 ),
                 widget.Prompt(),
                 widget.Spacer(),
-                widget.Battery(
-                    charge_char='󱐋 ',
-                    discharge_char='',
-                    full_char='',
-                    show_short_text=False,
+                widget.ALSAWidget(
                     foreground='#cad3f5',
-                    low_foreground='#ed8796',
-                    format='{char}  {percent:2.0%}'
+                    bar_colour_normal='#8aadf4',
+                    bar_colour_high='#f5a97f',
+                    bar_colour_loud='#ed8796',
+                    bar_colour_mute='#6e738d',
+                    bar_background='#6e738d',
+                    mode='both',
+                    bar_height=24,
+                    icon_size=24,
+                    **decor_group
                 ),
-                widget.CurrentLayout(foreground='#cad3f5', fmt=' {}'),
-                widget.Clock(foreground='#cad3f5', format='󰸘 %a, %b %d'),
-                widget.Clock(foreground='#cad3f5', format='󰅐 %I:%M'),
-                widget.Spacer(length=8)
+                widget.WiFiIcon(
+                    foreground='#cad3f5',
+                    active_colour='#cad3f5',
+                    inactive_colour='#6e738d',
+                    interface='wlo1',
+                    **decor_group
+                ),
+                widget.Spacer(length=4),
+                widget.Battery(
+                    charge_char='󱐋  ',
+                    discharge_char=' ',
+                    full_char=' ',
+                    show_short_text=False,
+                    foreground='#a6da95',
+                    low_foreground='#ed8796',
+                    format='{char}  {percent:2.0%}',
+                    **decor
+                ),
+                widget.Spacer(length=4),
+                widget.CurrentLayout(foreground='#eed49f', fmt='  {}', **decor),
+                widget.Spacer(length=4),
+                widget.Clock(foreground='#91d7e3', format='󰸘  %a, %b %d', **decor),
+                widget.Spacer(length=4),
+                widget.Clock(foreground='#f5bde6', format='󰅐  %I:%M', **decor),
+                widget.Spacer(length=4)
             ],
             36,
-            margin=[8, 8, 4, 8],
+            margin=[0, 0, 4, 0],
             background='#24273a',  # Macchiato Base
         ),
         right=bar.Gap(4),
