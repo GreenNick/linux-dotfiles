@@ -1,29 +1,3 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import os
 import subprocess
 from libqtile import bar, hook, layout, qtile
@@ -98,6 +72,8 @@ keys = [
         desc="Toggle between layouts"),
     Key([mod], 'm', lazy.window.toggle_maximize(),
         desc='Maximize window'),
+    Key([mod], 'f', lazy.window.toggle_fullscreen(),
+        desc='Fullscreen window'),
     Key([mod], "q", lazy.window.kill(),
         desc="Quit focused window"),
     Key([mod, "control"], "r", lazy.reload_config(),
@@ -114,7 +90,7 @@ keys = [
 ]
 
 groups = [
-    Group('top'),
+    Group('top', layout='max'),
     Group('www',
           matches=[Match(wm_class='firefox'),
                    Match(wm_class='floorp')]),
@@ -256,11 +232,11 @@ screens = [
                     **decor
                 ),
                 widget.Spacer(length=4),
-                widget.CurrentLayout(foreground='#eed49f', fmt='  {}', **decor),
+                widget.CurrentLayout(foreground='#eed49f', fmt=' {}', **decor),
                 widget.Spacer(length=4),
-                widget.Clock(foreground='#91d7e3', format='󰸘  %a, %b %d', **decor),
+                widget.Clock(foreground='#91d7e3', format='󰃭 %a, %b %d', **decor),
                 widget.Spacer(length=4),
-                widget.Clock(foreground='#f5bde6', format='󰅐  %I:%M', **decor),
+                widget.Clock(foreground='#f5bde6', format=' %I:%M', **decor),
                 widget.Spacer(length=4)
             ],
             36,
@@ -274,16 +250,27 @@ screens = [
     ),
 ]
 
-dgroups_key_binder = None
-dgroups_app_rules = []
-follow_mouse_focus = True
-bring_front_click = False
-cursor_warp = False
+# Allow applications to auto-fullscreen themselves
 auto_fullscreen = True
-focus_on_window_activation = "smart"
-reconfigure_screens = True
 # Allow applications to auto-minimize after losing focus
 auto_minimize = True
+# Bring floating windows to the front when clicked
+bring_front_click = 'floating_only'
+# Warp cursor to the center of the focused window after hotkey
+cursor_warp = True
+# Send windows to groups based on matching rules
+dgroups_app_rules = []
+# Generate dynamic hotkeys for groups
+dgroups_key_binder = None
+# Allow applications to capture focus if they are in the current group
+focus_on_window_activation = 'smart'
+# Automatically focus window under cursor
+follow_mouse_focus = True
+# Automatically reconfigure screens after randr configuration changes
+reconfigure_screens = True
+# Set wmname to whitelisted string for java compatibility
+wmname = 'LG3D'
+
 # Configure input devices on Wayland
 wl_input_rules = {
     'type:touchpad': InputConfig(
@@ -301,13 +288,3 @@ wl_input_rules = {
 @hook.subscribe.startup_once
 def autostart():
     subprocess.run(f'{config_home}/qtile/autostart.sh')
-
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
-wmname = "LG3D"
