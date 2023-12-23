@@ -1,5 +1,6 @@
 import os
 import subprocess
+from catppuccin import Flavor
 from libqtile import bar, hook, layout, qtile
 from libqtile.backend.wayland import InputConfig
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -19,6 +20,11 @@ else:
     terminal = 'alacritty'
     screenshot = ''
 
+# Color themes
+dark = Flavor.macchiato()
+light = Flavor.latte()
+
+# Keybindings
 keys = [
     # Move window focus
     Key([mod], "h", lazy.layout.left(),
@@ -117,8 +123,8 @@ for i, group in enumerate(groups):
 
 layouts = [
     layout.Tile(
-        border_focus='#7287fd',  # Latte Lavender
-        border_normal='#b7bdf8',  # Macchiato Lavender
+        border_focus=light.lavender,
+        border_normal=dark.lavender,
         border_width=3,
         margin=4
     ),
@@ -126,8 +132,8 @@ layouts = [
 ]
 
 floating_layout = layout.Floating(
-    border_focus='#7287fd',  # Latte Lavender
-    border_normal='#b7bdf8',  # Macchiato Lavender
+    border_focus=light.lavender,
+    border_normal=dark.lavender,
     border_width=3,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -159,9 +165,9 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 decor_group = {
-    "decorations": [
+    'decorations': [
         widget.decorations.RectDecoration(
-            colour="#363a4f",
+            colour=dark.surface0,
             radius=12,
             filled=True,
             padding_y=5,
@@ -172,9 +178,9 @@ decor_group = {
 }
 
 decor = {
-    "decorations": [
+    'decorations': [
         widget.decorations.RectDecoration(
-            colour="#363a4f",
+            colour=dark.surface0,
             radius=12,
             filled=True,
             padding_y=5
@@ -190,11 +196,11 @@ screens = [
                 widget.Spacer(length=4),
                 widget.GroupBox(
                     highlight_method='text',
-                    block_highlight_text_color='#24273a',  # Macchiato Base
-                    this_current_screen_border='#c6a0f6',  # Macchiato Mauve
-                    active='#cad3f5',  # Macchiato Text
-                    inactive='#6e738d',  # Macchiato Overlay0
-                    urgent_text='#ed8796',
+                    block_highlight_text_color=dark.base,
+                    this_current_screen_border=dark.mauve,
+                    active=dark.text,
+                    inactive=dark.overlay0,
+                    urgent_text=dark.red,
                     padding_x=3,
                     rounded=False,
                     **decor_group
@@ -202,21 +208,21 @@ screens = [
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.ALSAWidget(
-                    foreground='#cad3f5',
-                    bar_colour_normal='#8aadf4',
-                    bar_colour_high='#f5a97f',
-                    bar_colour_loud='#ed8796',
-                    bar_colour_mute='#6e738d',
-                    bar_background='#6e738d',
+                    foreground=dark.text,
+                    bar_colour_normal=dark.blue,
+                    bar_colour_high=dark.peach,
+                    bar_colour_loud=dark.red,
+                    bar_colour_mute=dark.overlay0,
+                    bar_background=dark.overlay0,
                     mode='both',
                     bar_height=24,
                     icon_size=24,
                     **decor_group
                 ),
                 widget.WiFiIcon(
-                    foreground='#cad3f5',
-                    active_colour='#cad3f5',
-                    inactive_colour='#6e738d',
+                    foreground=dark.text,
+                    active_colour=dark.text,
+                    inactive_colour=dark.overlay0,
                     interface='wlo1',
                     **decor_group
                 ),
@@ -226,22 +232,22 @@ screens = [
                     discharge_char=' ',
                     full_char=' ',
                     show_short_text=False,
-                    foreground='#a6da95',
-                    low_foreground='#ed8796',
+                    foreground=dark.green,
+                    low_foreground=dark.red,
                     format='{char}  {percent:2.0%}',
                     **decor
                 ),
                 widget.Spacer(length=4),
-                widget.CurrentLayout(foreground='#eed49f', fmt=' {}', **decor),
+                widget.CurrentLayout(foreground=dark.yellow, fmt=' {}', **decor),
                 widget.Spacer(length=4),
-                widget.Clock(foreground='#91d7e3', format='󰃭 %a, %b %d', **decor),
+                widget.Clock(foreground=dark.sky, format='󰃭 %a, %b %d', **decor),
                 widget.Spacer(length=4),
-                widget.Clock(foreground='#f5bde6', format=' %I:%M', **decor),
+                widget.Clock(foreground=dark.pink, format=' %I:%M', **decor),
                 widget.Spacer(length=4)
             ],
             36,
             margin=[0, 0, 4, 0],
-            background='#24273a',  # Macchiato Base
+            background=dark.base,
         ),
         right=bar.Gap(4),
         left=bar.Gap(4),
