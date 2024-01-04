@@ -14,15 +14,22 @@ alias \
     fgrep="fgrep --color=auto"
 
 # Use neovim in place of vim
-[ -x "$(command -v nvim)" ] \
-    && alias vim="nvim" vimdiff="nvim -d"
+if command -v nvim > /dev/null 2>&1; then
+    alias vim="nvim" vimdiff="nvim -d"
+fi
 
+# Use bat for cat and paging
 if command -v bat > /dev/null 2>&1; then
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-  export MANROFFOPT="-c"
-  export BAT_THEME="base16"
-  alias cat="bat --paging=never"
-  alias less="bat --paging=always"
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
+    export BAT_THEME="base16"
+    alias cat="bat --paging=never"
+    alias less="bat --paging=always"
+fi
+
+# Use bottom in place of top
+if command -v btm > /dev/null 2>&1; then
+    alias top="btm --basic"
 fi
 
 # Open nnn

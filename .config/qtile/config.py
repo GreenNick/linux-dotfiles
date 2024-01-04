@@ -1,9 +1,11 @@
+import custom_widgets
 import os
 import subprocess
 from catppuccin import Flavor
 from libqtile import bar, hook, layout, qtile
 from libqtile.backend.wayland import InputConfig
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import (Click, Drag, DropDown, Group, Key, Match,
+                             ScratchPad, Screen)
 from libqtile.lazy import lazy
 from qtile_extras import widget
 
@@ -41,73 +43,82 @@ keys = [
     # Move windows
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(),
         desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(),
-        desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(),
         desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(),
         desc="Move window up"),
+    Key([mod, "shift"], "l", lazy.layout.shuffle_right(),
+        desc="Move window to the right"),
 
     # Resize windows
     Key([mod, "control"], "h", lazy.layout.grow_left(),
         desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(),
-        desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(),
         desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(),
         desc="Grow window up"),
+    Key([mod, "control"], "l", lazy.layout.grow_right(),
+        desc="Grow window to the right"),
     Key([mod], "n", lazy.layout.normalize(),
         desc="Reset all window sizes"),
 
-    # lazy.window.toggle_maximize()
-
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "Return", lazy.spawn(terminal),
-        desc="Launch terminal"),
-    Key([mod], "s", lazy.spawn(screenshot, shell=True),
-        desc="Take a screenshot"),
+    Key([mod], 'Return', lazy.spawn(terminal),
+        desc='Launch terminal'),
+    Key([mod], 's', lazy.spawn(screenshot, shell=True),
+        desc='Take a screenshot'),
 
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(),
-        desc="Toggle between layouts"),
+    Key([mod], 'Tab', lazy.next_layout(),
+        desc='Toggle between layouts'),
     Key([mod], 'm', lazy.window.toggle_maximize(),
         desc='Maximize window'),
-    Key([mod], 'f', lazy.window.toggle_fullscreen(),
+    Key([mod, 'shift'], 'm', lazy.window.toggle_fullscreen(),
         desc='Fullscreen window'),
-    Key([mod], "q", lazy.window.kill(),
-        desc="Quit focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(),
-        desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(),
-        desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn(launcher),
-        desc="Run application launcher"),
+    Key([mod], 'q', lazy.window.kill(),
+        desc='Quit focused window'),
+    Key([mod, 'control'], 'r', lazy.reload_config(),
+        desc='Reload the config'),
+    Key([mod, 'control'], "q", lazy.shutdown(),
+        desc='Shutdown Qtile'),
+    Key([mod], 'r', lazy.spawn(launcher),
+        desc='Run application launcher'),
 
     Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -q sset Master 5%+'),
         desc=''),
     Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -q sset Master 5%-'),
         desc=''),
+
+    Key([mod], 'b', lazy.group['scratch'].dropdown_toggle('btm'),
+        desc=''),
+    Key([mod], 'c', lazy.group['scratch'].dropdown_toggle('calcurse'),
+        desc=''),
+    Key([mod], 'n', lazy.group['scratch'].dropdown_toggle('newsboat'),
+        desc=''),
+    Key([mod], 'f', lazy.group['scratch'].dropdown_toggle('nnn'),
+        desc='')
 ]
 
+drop_kwargs = {'height': 0.66, 'width': 0.64, 'x': 0.18, 'y': 0.17}
 groups = [
-    Group('top', layout='max'),
     Group('www',
           matches=[Match(wm_class='firefox'),
                    Match(wm_class='floorp')]),
     Group('dev',
           matches=[Match(wm_class='Alacritty'),
                    Match(wm_class='foot')]),
+    Group('log',
+          matches=[Match(wm_class='Logseq')]),
     Group('fun',
           matches=[Match(wm_class='Steam')]),
     Group('irc',
           matches=[Match(wm_class='discord'),
-                   Match(wm_class='Slack')])
+                   Match(wm_class='Slack')]),
+    ScratchPad('scratch', [
+        DropDown('btm', 'foot -e btm', **drop_kwargs),
+        DropDown('calcurse', 'foot -e calcurse', **drop_kwargs),
+        DropDown('newsboat', 'foot -e newsboat', **drop_kwargs),
+        DropDown('nnn', 'foot -e nnn -de', **drop_kwargs)
+    ])
 ]
 
 for i, group in enumerate(groups):
@@ -126,9 +137,9 @@ layouts = [
         border_focus=light.lavender,
         border_normal=dark.lavender,
         border_width=3,
-        margin=4
+        margin=3
     ),
-    layout.Max(),
+    layout.Max()
 ]
 
 floating_layout = layout.Floating(
@@ -136,7 +147,6 @@ floating_layout = layout.Floating(
     border_normal=dark.lavender,
     border_width=3,
     float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
@@ -189,6 +199,27 @@ decor = {
     'padding': 10
 }
 
+BAT_PATH = '/sys/class/power_supply'
+batteries = [f for f in os.listdir(BAT_PATH) if f.startswith('BAT')]
+
+if len(batteries) != 0:
+    battery_widget = widget.Battery(
+        charge_char='󱐋  ',
+        discharge_char=' ',
+        full_char=' ',
+        show_short_text=False,
+        foreground=dark.green,
+        low_foreground=dark.red,
+        format='{char} {percent:2.0%}',
+        **decor
+    )
+else:
+    battery_widget = widget.TextBox(
+        foreground=dark.green,
+        fmt='',
+        **decor
+    )
+
 screens = [
     Screen(
         top=bar.Bar(
@@ -227,31 +258,37 @@ screens = [
                     **decor_group
                 ),
                 widget.Spacer(length=4),
-                widget.Battery(
-                    charge_char='󱐋  ',
-                    discharge_char=' ',
-                    full_char=' ',
-                    show_short_text=False,
-                    foreground=dark.green,
-                    low_foreground=dark.red,
-                    format='{char}  {percent:2.0%}',
+                battery_widget,
+                widget.Spacer(length=4),
+                custom_widgets.CurrentLayout(
+                    foreground=dark.yellow,
+                    layout_icons={
+                        'tile': '',
+                        'max': ''
+                    },
                     **decor
                 ),
                 widget.Spacer(length=4),
-                widget.CurrentLayout(foreground=dark.yellow, fmt=' {}', **decor),
+                widget.Clock(
+                    foreground=dark.sky,
+                    format='󰃭 %a, %b %d',
+                    **decor
+                ),
                 widget.Spacer(length=4),
-                widget.Clock(foreground=dark.sky, format='󰃭 %a, %b %d', **decor),
-                widget.Spacer(length=4),
-                widget.Clock(foreground=dark.pink, format=' %I:%M', **decor),
+                widget.Clock(
+                    foreground=dark.pink,
+                    format=' %I:%M',
+                    **decor
+                ),
                 widget.Spacer(length=4)
             ],
             36,
-            margin=[0, 0, 4, 0],
+            margin=[0, 0, 3, 0],
             background=dark.base,
         ),
-        right=bar.Gap(4),
-        left=bar.Gap(4),
-        bottom=bar.Gap(4),
+        right=bar.Gap(3),
+        left=bar.Gap(3),
+        bottom=bar.Gap(3),
         wallpaper='~/Pictures/Wallpaper.png',
     ),
 ]
