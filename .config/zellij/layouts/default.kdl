@@ -15,16 +15,16 @@ layout {
             mode_normal "#[bg=#8aadf4] "
             mode_tmux "#[bg=#f5a97f] "
 
-            tab_normal "#[fg=#6C7086]{name} "
-            tab_active "#[fg=#9399B2,bold,italic]{name} "
+            tab_normal "#[fg=#363a4f]#[fg=#24273a,bg=#363a4f]{index}#[fg=#363a4f] "
+            tab_active "#[fg=#363a4f]#[fg=#8aadf4,bg=#363a4f]{index}#[fg=#363a4f] "
 
             command_hostname_command "cat /etc/hostname"
             command_hostname_format "#[fg=#8aadf4,bold]{stdout}"
             command_hostname_interval "10"
             command_hostname_rendermode "static"
 
-            datetime "#[fg=#6C7086,bold]{format}"
-            datetime_format "%Y %b %d %H:%M"
+            datetime "#[fg=#f5bde6,bold]{format}"
+            datetime_format "%Y-%m-%d %H:%M"
             datetime_timezone "America/New_York"
         }
     }
