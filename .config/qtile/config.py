@@ -234,6 +234,7 @@ screens = [
                     urgent_text=dark.red,
                     padding_x=3,
                     rounded=False,
+                    disable_drag=True,
                     **decor_group
                 ),
                 widget.Prompt(),

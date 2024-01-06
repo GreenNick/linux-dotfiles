@@ -4,7 +4,7 @@ layout {
     pane size=1 borderless=true {
         plugin location="file:/home/nick/.local/bin/zjstatus.wasm" {
             format_left "{mode} {command_hostname} {tabs}"
-            format_right "#[fg=#8aadf4,bold]{session} {datetime}"
+            format_right "#[fg=#363a4f]#[fg=#eed49f,bg=#363a4f]{session}#[fg=#363a4f] #[fg=#363a4f]{command_date}#[fg=#363a4f] #[fg=#363a4f]{command_time}#[fg=#363a4f]"
             format_space " "
 
             border_enabled "false"
@@ -15,17 +15,23 @@ layout {
             mode_normal "#[bg=#8aadf4] "
             mode_tmux "#[bg=#f5a97f] "
 
-            tab_normal "#[fg=#363a4f]#[fg=#24273a,bg=#363a4f]{index}#[fg=#363a4f] "
-            tab_active "#[fg=#363a4f]#[fg=#8aadf4,bg=#363a4f]{index}#[fg=#363a4f] "
+            tab_normal "#[fg=#363a4f]#[fg=#6e738d,bg=#363a4f]{index}#[fg=#363a4f] "
+            tab_active "#[fg=#363a4f]#[fg=#c6a0f6,bg=#363a4f,bold]{index}#[fg=#363a4f] "
 
             command_hostname_command "cat /etc/hostname"
             command_hostname_format "#[fg=#8aadf4,bold]{stdout}"
             command_hostname_interval "10"
             command_hostname_rendermode "static"
 
-            datetime "#[fg=#f5bde6,bold]{format}"
-            datetime_format "%Y-%m-%d %H:%M"
-            datetime_timezone "America/New_York"
+            command_date_command "date +'%b %d %Y'"
+            command_date_format "#[fg=#91d7e3,bg=#363a4f]{stdout}"
+            command_date_interval "1"
+            command_date_rendermode "static"
+
+            command_time_command "date +'%H:%M'"
+            command_time_format "#[fg=#f5bde6,bg=#363a4f]{stdout}"
+            command_time_interval "1"
+            command_time_rendermode "static"
         }
     }
 }
