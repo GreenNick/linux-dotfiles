@@ -167,7 +167,7 @@ mouse = [
 ]
 
 widget_defaults = dict(
-    font='NotoSans Nerd Font Medium',
+    font='NotoSans Nerd Font SemiBold',
     fontsize=14,
     padding=4,
     theme_path=f'{config_home}/qtile/icons'
@@ -207,6 +207,7 @@ if len(batteries) != 0:
         charge_char='󱐋  ',
         discharge_char=' ',
         full_char=' ',
+        not_charging_char=' ',
         show_short_text=False,
         foreground=dark.green,
         low_foreground=dark.red,
@@ -225,6 +226,8 @@ screens = [
         top=bar.Bar(
             [
                 widget.Spacer(length=4),
+                widget.TextBox('󰌽', foreground=dark.blue, **decor),
+                widget.Spacer(length=4),
                 widget.GroupBox(
                     highlight_method='text',
                     block_highlight_text_color=dark.base,
@@ -232,12 +235,13 @@ screens = [
                     active=dark.text,
                     inactive=dark.overlay0,
                     urgent_text=dark.red,
-                    padding_x=3,
+                    padding_x=2,
                     rounded=False,
                     disable_drag=True,
                     **decor_group
                 ),
                 widget.Prompt(),
+                widget.Spacer(),
                 widget.Spacer(),
                 widget.ALSAWidget(
                     foreground=dark.text,
