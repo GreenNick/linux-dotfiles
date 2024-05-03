@@ -4,5 +4,5 @@ PKG_NAME="$1"
 
 sudo -u "aur" repo-remove /var/cache/aur/aur.db.tar.gz $PKG_NAME 2> /dev/null
 sudo -u "aur" rm /var/cache/aur/"$PKG_NAME"*.pkg.tar.zst
-sudo pacman -Rsn "$PKG_NAME" 2> /dev/null
+sudo pacman -Rsn "$PKG_NAME" --noconfirm 2> /dev/null
 sudo pacman -Sy
