@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PKG="$1"
+
+sudo -u "aur" repo-remove /var/cache/aur/aur.db.tar.gz "$PKG" 2> /dev/null \
+    && sudo -u "aur" rm /var/cache/aur/"$PKG"*.pkg.tar.zst

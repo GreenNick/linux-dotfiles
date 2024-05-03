@@ -26,7 +26,13 @@ EOF
 append_if_missing "$XDG_CONFIG_HOME/shell/system" "$(cat << EOF
 
 # Run aurutils with aur user
-alias aur="sudo --preserve-env=AUR_PAGER -u aur aur"
+aur() {
+    if [ "\$1" = "remove" ]; then
+        command "\$HOME/Scripts/aur-remove" "\$2"
+    else
+        command sudo --preserve-env=AUR_PAGER -u "aur" aur "\$@"
+    fi
+}
 EOF
 )"
 
