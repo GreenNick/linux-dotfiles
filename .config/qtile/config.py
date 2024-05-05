@@ -1,4 +1,4 @@
-import custom_widgets
+# import custom_widgets
 import os
 import subprocess
 from catppuccin import Flavor
@@ -7,7 +7,8 @@ from libqtile.backend.wayland import InputConfig
 from libqtile.config import (Click, Drag, DropDown, Group, Key, Match,
                              ScratchPad, Screen)
 from libqtile.lazy import lazy
-from qtile_extras import widget
+from libqtile import widget
+# from qtile_extras import widget
 
 mod = "mod4"
 home = os.path.expandvars('$HOME')
@@ -174,51 +175,51 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-decor_group = {
-    'decorations': [
-        widget.decorations.RectDecoration(
-            colour=dark.surface0,
-            radius=12,
-            filled=True,
-            padding_y=5,
-            group=True
-        )
-    ],
-    'padding': 10
-}
-
-decor = {
-    'decorations': [
-        widget.decorations.RectDecoration(
-            colour=dark.surface0,
-            radius=12,
-            filled=True,
-            padding_y=5
-        )
-    ],
-    'padding': 10
-}
+# decor_group = {
+#     'decorations': [
+#         widget.decorations.RectDecoration(
+#             colour=dark.surface0,
+#             radius=12,
+#             filled=True,
+#             padding_y=5,
+#             group=True
+#         )
+#     ],
+#     'padding': 10
+# }
+#
+# decor = {
+#     'decorations': [
+#         widget.decorations.RectDecoration(
+#             colour=dark.surface0,
+#             radius=12,
+#             filled=True,
+#             padding_y=5
+#         )
+#     ],
+#     'padding': 10
+# }
 
 BAT_PATH = '/sys/class/power_supply'
 batteries = [f for f in os.listdir(BAT_PATH) if f.startswith('BAT')]
 
 if len(batteries) != 0:
     battery_widget = widget.Battery(
-        charge_char='󱐋  ',
-        discharge_char=' ',
-        full_char=' ',
-        not_charging_char=' ',
+        charge_char='󱐋 ',
+        discharge_char='',
+        full_char='',
+        not_charging_char='',
         show_short_text=False,
         foreground=dark.green,
         low_foreground=dark.red,
         format='{char} {percent:2.0%}',
-        **decor
+        # **decor
     )
 else:
     battery_widget = widget.TextBox(
         foreground=dark.green,
         fmt='',
-        **decor
+        # **decor
     )
 
 screens = [
@@ -226,7 +227,10 @@ screens = [
         top=bar.Bar(
             [
                 widget.Spacer(length=4),
-                widget.TextBox('󰌽', foreground=dark.blue, **decor),
+                widget.TextBox(
+                    '󰌽', foreground=dark.blue,
+                    # **decor
+                ),
                 widget.Spacer(length=4),
                 widget.GroupBox(
                     highlight_method='text',
@@ -238,52 +242,52 @@ screens = [
                     padding_x=2,
                     rounded=False,
                     disable_drag=True,
-                    **decor_group
+                    # **decor_group
                 ),
                 widget.Prompt(),
                 widget.Spacer(),
                 widget.Spacer(),
-                widget.ALSAWidget(
-                    foreground=dark.text,
-                    bar_colour_normal=dark.blue,
-                    bar_colour_high=dark.peach,
-                    bar_colour_loud=dark.red,
-                    bar_colour_mute=dark.overlay0,
-                    bar_background=dark.overlay0,
-                    mode='both',
-                    bar_height=24,
-                    icon_size=24,
-                    **decor_group
-                ),
-                widget.WiFiIcon(
-                    foreground=dark.text,
-                    active_colour=dark.text,
-                    inactive_colour=dark.overlay0,
-                    interface='wlo1',
-                    **decor_group
-                ),
+                # widget.ALSAWidget(
+                #     foreground=dark.text,
+                #     bar_colour_normal=dark.blue,
+                #     bar_colour_high=dark.peach,
+                #     bar_colour_loud=dark.red,
+                #     bar_colour_mute=dark.overlay0,
+                #     bar_background=dark.overlay0,
+                #     mode='both',
+                #     bar_height=24,
+                #     icon_size=24,
+                #     # **decor_group
+                # ),
+                # widget.WiFiIcon(
+                #     foreground=dark.text,
+                #     active_colour=dark.text,
+                #     inactive_colour=dark.overlay0,
+                #     interface='wlo1',
+                #     # **decor_group
+                # ),
                 widget.Spacer(length=4),
                 battery_widget,
                 widget.Spacer(length=4),
-                custom_widgets.CurrentLayout(
-                    foreground=dark.yellow,
-                    layout_icons={
-                        'tile': '',
-                        'max': ''
-                    },
-                    **decor
-                ),
+                # custom_widgets.CurrentLayout(
+                #     foreground=dark.yellow,
+                #     layout_icons={
+                #         'tile': '',
+                #         'max': ''
+                #     },
+                #     **decor
+                # ),
                 widget.Spacer(length=4),
                 widget.Clock(
                     foreground=dark.sky,
                     format='󰃭 %a, %b %d',
-                    **decor
+                    # **decor
                 ),
                 widget.Spacer(length=4),
                 widget.Clock(
                     foreground=dark.pink,
                     format=' %I:%M',
-                    **decor
+                    # **decor
                 ),
                 widget.Spacer(length=4)
             ],
