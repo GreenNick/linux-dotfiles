@@ -1,15 +1,15 @@
 #!/bin/sh
 
 append_if_missing () {
-  tr '\n' '\01' < "$1" | if ! grep -q "$(echo "$2" | tr '\n' '\01')"; then
-    echo "$2" >> "$1"
-  fi
+    tr '\n' '\01' < "$1" | if ! grep -q "$(echo "$2" | tr '\n' '\01')"; then
+        echo "$2" >> "$1"
+    fi
 }
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Error: This script must run as root."
-  echo "Make sure to check the contents of the script for malicious code."
-  exit 1
+    echo "Error: This script must run as root."
+    echo "Make sure to check the contents of the script for malicious code."
+    exit 1
 fi
 
 # Create the AUR user
