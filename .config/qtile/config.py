@@ -14,12 +14,11 @@ mod = "mod4"
 home = os.path.expandvars('$HOME')
 config_home = os.path.expandvars('$XDG_CONFIG_HOME')
 screenshot_dir = f'{home}/Pictures/screenshots'
+launcher = 'ags -t app-launcher'
 if qtile.core.name == 'wayland':
-    launcher = f'{config_home}/eww/scripts/eww-launcher.sh --wayland'
     terminal = 'foot'
     screenshot = f'grim -g "$(slurp)" {screenshot_dir}/$(date +"%F@%T.png")'
 else:
-    launcher = f'{config_home}/eww/scripts/eww-launcher.sh --x11'
     terminal = 'alacritty'
     screenshot = ''
 
