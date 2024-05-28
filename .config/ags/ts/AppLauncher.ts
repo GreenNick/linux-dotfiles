@@ -4,23 +4,28 @@ const applications = await Service.import('applications')
 const WINDOW_NAME = 'app-launcher'
 
 const AppLauncher = () => {
-  const searchResults = Variable(
+  const search = Variable('')
+  const searchResults = Utils.derive([search], s =>
     applications
-      .query('')
+      .query(s)
       .sort((a, b) => a.name.localeCompare(b.name))
   )
 
+  const closeLauncher = () => {
+    search.value = ''
+    App.closeWindow(WINDOW_NAME)
+  }
+
   const SearchBox = Widget.Entry({
     placeholder_text: '',
+    text: search.bind(),
     hexpand: true,
     onChange: ({ text }) => {
-      searchResults.value = applications
-        .query(text ?? '')
-        .sort((a, b) => a.name.localeCompare(b.name))
+      search.value = text ?? ''
     },
     onAccept: () => {
       searchResults.value[0].launch()
-      App.closeWindow(WINDOW_NAME)
+      closeLauncher()
     }
   })
 
@@ -49,7 +54,7 @@ const AppLauncher = () => {
     }),
     onClicked: () => {
       app.launch()
-      App.closeWindow(WINDOW_NAME)
+      closeLauncher()
     }
   })
 
@@ -81,7 +86,7 @@ const AppLauncher = () => {
         AppList
       ]
     })
-  }).keybind('Escape', () => App.closeWindow(WINDOW_NAME))
+  }).keybind('Escape', closeLauncher)
 }
 
 export default AppLauncher
