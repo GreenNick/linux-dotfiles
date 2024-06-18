@@ -32,7 +32,7 @@ const AppLauncher = () => {
   const SearchBar = Widget.Box({
     className: 'search-bar',
     vertical: false,
-    spacing: 4,
+    spacing: 5,
     children: [
       Widget.Label('Apps'),
       SearchBox

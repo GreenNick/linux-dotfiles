@@ -1,6 +1,7 @@
 @import url("colors.css");
 
 * {
+  all: unset;
   color: @text;
   font-family: 'NotoSans Nerd Font SemiBold';
   font-size: 14px;
@@ -9,20 +10,23 @@
 .App-Launcher .launcher-container {
   background-color: @mantle;
   border: 3px solid @mauve;
+  border-radius: 12px;
+  padding: 8px;
 }
 
 .App-Launcher .scrollable {
   min-width: 600px;
-  min-height: 300px;
-  margin: 4px;
-}
-
-.App-Launcher .search-bar {
-  margin: 8px 8px 0 8px;
+  min-height: calc(45px * 6);
 }
 
 .App-Launcher .search-bar entry {
+  padding-left: 6px;
+  border-radius: 6px;
   background-color: @surface0;
+}
+
+.App-Launcher .search-bar entry:focus {
+  border: 2px solid @blue;
 }
 
 .App-Launcher .search-bar label {
@@ -37,11 +41,14 @@
 }
 
 .App-Launcher .app-list button {
+  padding: 4px;
+  margin-top: 5px;
+  border-radius: 6px;
   background-color: @base;
 }
 
 .App-Launcher .app-list button:hover {
-  background-color: @lavender;
+  background-color: @peach;
 }
 .App-Launcher .app-list button:hover label {
   color: @base;
