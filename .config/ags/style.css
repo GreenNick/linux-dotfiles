@@ -1,9 +1,9 @@
-@import url("colors.css");
+@import url('colors.css');
 
 * {
   all: unset;
   color: @text;
-  font-family: 'NotoSans Nerd Font SemiBold';
+  font-family: 'CaskaydiaCove Nerd Font';
   font-size: 14px;
 }
 
@@ -14,8 +14,17 @@
   padding: 8px;
 }
 
+.App-Launcher .side-image {
+  background-image: url('assets/launcher_side_image.png');
+  background-size: cover;
+  background-position: right;
+  border-radius: 6px;
+  margin-left: 8px;
+  min-width: 200px;
+}
+
 .App-Launcher .scrollable {
-  min-width: 600px;
+  min-width: 400px;
   min-height: calc(45px * 6);
 }
 

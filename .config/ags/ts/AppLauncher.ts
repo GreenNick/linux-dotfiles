@@ -1,3 +1,4 @@
+import { ColorIterator } from 'ts/utils'
 import { Application } from 'types/service/applications'
 const applications = await Service.import('applications')
 
@@ -39,8 +40,9 @@ const AppLauncher = () => {
     ]
   })
 
-  const AppListItem = (app: Application) => Widget.Button({
+  const AppListItem = ({app, color}: {app: Application, color: string}) => Widget.Button({
     visible: true,
+    css: `:hover { background-color: ${color} }`,
     child: Widget.Box({
       vertical: false,
       spacing: 8,
@@ -65,9 +67,11 @@ const AppLauncher = () => {
     child: Widget.ListBox({
       className: 'app-list'
     }).hook(searchResults, self => {
+      const colorIterator = new ColorIterator()
       self.foreach(w => w.destroy())
       searchResults
         .getValue()
+        .map(app => ({ app, color: colorIterator.next() }))
         .map(AppListItem)
         .forEach(a => self.add(a))
     })
@@ -80,10 +84,12 @@ const AppLauncher = () => {
     visible: false,
     child: Widget.Box({
       className: 'launcher-container',
-      vertical: true,
       children: [
-        SearchBar,
-        AppList
+        Widget.Box({
+          vertical: true,
+          children: [ SearchBar, AppList ]
+        }),
+        Widget.Box({ className: 'side-image' })
       ]
     })
   }).keybind('Escape', closeLauncher)
