@@ -27,6 +27,11 @@ if command -v bat > /dev/null 2>&1; then
     alias less="bat --paging=always"
 fi
 
+# Use eza for ls
+if command -v eza > /dev/null 2>&1; then
+  alias ls="eza"
+fi
+
 # Use bottom in place of top
 if command -v btm > /dev/null 2>&1; then
     alias top="btm --basic"

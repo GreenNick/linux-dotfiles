@@ -8,7 +8,7 @@ export PAGER="less"
 export AUR_PAGER="nnn"
 
 # Application theme
-export GTK_THEME="Catppuccin-Latte-Standard-Lavender-Light"
+export GTK_THEME="Catppuccin-Macchiato-Standard-Lavender-Dark"
 export QT_STYLE_OVERRIDE="kvantum"
 
 # XDG user directories

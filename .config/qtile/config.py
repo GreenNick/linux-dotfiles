@@ -98,7 +98,13 @@ keys = [
         desc='')
 ]
 
-drop_kwargs = {'height': 0.66, 'width': 0.64, 'x': 0.18, 'y': 0.17}
+drop_kwargs = {
+    'opacity': 1,
+    'height': 0.66,
+    'width': 0.64,
+    'x': 0.18,
+    'y': 0.17
+}
 groups = [
     Group('www',
           matches=[Match(wm_class='firefox'),
@@ -109,7 +115,7 @@ groups = [
     Group('log',
           matches=[Match(wm_class='Logseq')]),
     Group('fun',
-          matches=[Match(wm_class='Steam')]),
+          matches=[Match(wm_class='steam')]),
     Group('irc',
           matches=[Match(wm_class='discord'),
                    Match(wm_class='Slack')]),
@@ -134,6 +140,7 @@ for i, group in enumerate(groups):
 
 layouts = [
     layout.Tile(
+        add_after_last=True,
         border_focus=light.lavender,
         border_normal=dark.lavender,
         border_width=3,
