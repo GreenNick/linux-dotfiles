@@ -235,6 +235,14 @@ local plugins = {
     end
   },
 
+  -- Automatically insert "paired" characters
+  {
+    'echasnovski/mini.pairs',
+    config = function()
+      require('mini.pairs').setup()
+    end
+  },
+
   -- Highlight trailing whitespace
   {
     'echasnovski/mini.trailspace',
