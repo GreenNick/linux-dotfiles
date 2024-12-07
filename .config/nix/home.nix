@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+{ config, user, homeDir, pkgs, zsh-fast-syntax-highlighting, zsh-vi-mode, ... }:
 
 {
-  home.username = "nick";
-  home.homeDirectory = "/home/nick";
+  home.username = "${user}";
+  home.homeDirectory = "${homeDir}";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -106,6 +106,10 @@
       [ -f "$XDG_CONFIG_HOME/shell/aliases" ] \
           && source "$XDG_CONFIG_HOME/shell/aliases"
 
+      # Load system-specific configuration
+      [ -f "$XDG_CONFIG_HOME/shell/system" ] \
+          && source $XDG_CONFIG_HOME/shell/system
+
       # Set shell history options
       HISTFILE=$XDG_STATE_HOME/zsh/history
       HISTSIZE=10000
@@ -122,26 +126,14 @@
       bindkey -v
 
       # Auto attach to Zellij session
-      if [[ -z "$ZELLIJ" ]]; then
-          zellij attach -c main
+      if [ -z "$ZELLIJ" -a "$TERM_PROGRAM" = "vscode" ]; then
+          zellij attach -c vscode 2> /dev/null
+      elif [ -z "$ZELLIJ" ]; then
+          zellij attach -c main 2> /dev/null
       fi
 
       # Clear terminal (and run neofetch) on startup
       fetch 2> /dev/null
-
-      # Load system-specific configuration
-      [ -f "$XDG_CONFIG_HOME/shell/system" ] \
-          && source $XDG_CONFIG_HOME/shell/system
-
-
-      # [ Plugins ]
-      # Enable improved vi mode
-      source $HOME/Git/zsh-vi-mode/zsh-vi-mode.zsh \
-          2> /dev/null
-
-      # Enable syntax highlighting
-      source $HOME/Git/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
-          2> /dev/null
     '';
     envExtra = ''
       # Application theme
@@ -177,5 +169,15 @@
       # Krita theme
       export KRITA_NO_STYLE_OVERRIDE=1
     '';
+    plugins = [
+      {
+        name = "fast-syntax-highlighting";
+        src = zsh-fast-syntax-highlighting;
+      }
+      {
+        name = "zsh-vi-mode";
+        src = zsh-vi-mode;
+      }
+    ];
   };
 }
