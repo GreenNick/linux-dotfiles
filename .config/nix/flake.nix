@@ -9,6 +9,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ags = {
+      url = "github:aylur/ags";
+    };
     zsh-fast-syntax-highlighting = {
       url = "github:zdharma-continuum/fast-syntax-highlighting";
       flake = false;
@@ -51,24 +54,20 @@
           ];
         };
       };
-      homeConfigurations."nick" = home-manager.lib.homeManagerConfiguration {
-        # inherit pkgs;
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [
-          ({
-            home-manager.extraSpecialArgs = inputs // {
-              user = "nick";
-              homeDir = "/home/nick";
-              system = "${linuxSystem}";
-              pkgs = nixpkgs.legacyPackages.${linuxSystem};
-            };
-          })
-          ./home.nix
-        ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
+      homeConfigurations = {
+        "nick" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${linuxSystem};
+          extraSpecialArgs = inputs // {
+            user = "nick";
+            homeDir = "/home/nick";
+            system = "${linuxSystem}";
+          };
+          modules = [
+            ./modules/ags/app-launcher
+            ./modules/cli/zsh.nix
+            ./hosts/nick-laptop/configuration.nix
+          ];
+        };
       };
     };
 }
