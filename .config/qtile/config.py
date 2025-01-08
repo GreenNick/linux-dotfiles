@@ -333,7 +333,6 @@ wmname = 'LG3D'
 wl_input_rules = {
     'type:touchpad': InputConfig(
         click_method='clickfinger',
-        natural_scroll=True,
         tap=True
     ),
     'type:keyboard': InputConfig(
