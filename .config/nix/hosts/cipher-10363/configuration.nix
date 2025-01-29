@@ -1,14 +1,13 @@
 { config, user, homeDir, pkgs, ... }:
 
 {
-  home.username = "nick";
-  home.homeDirectory = "/home/nick";
+  home.username = "nbowers7";
+  home.homeDirectory = "/Users/nbowers7";
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
     bat
     bottom
-    ghostty
     nerd-fonts.caskaydia-cove
     nerd-fonts.noto
     ripgrep
@@ -22,9 +21,6 @@
     # '')
   ];
 
-  # ags
-  app-launcher.enable = true;
-  # cli
   direnv.enable = true;
   eza.enable = true;
   zsh.enable = true;

@@ -47,7 +47,7 @@ set expandtab
 set smartindent
 
 " Enable line width marker
-set colorcolumn=80
+set colorcolumn=90,120
 
 " Highlight search results
 set incsearch

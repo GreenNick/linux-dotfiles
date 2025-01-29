@@ -81,6 +81,54 @@ local plugins = {
   -- Java language server
   'mfussenegger/nvim-jdtls',
 
+  -- Support for linters
+  {
+    'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        java = { 'checkstyle' }
+      }
+
+      lint.linters.checkstyle.config_file = 'checkstyle.xml'
+
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          lint.try_lint()
+        end
+      })
+    end
+  },
+
+  -- Improved UI for messages, cmdline, and pop-ups
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+      'nvim-treesitter/nvim-treesitter'
+    },
+    config = function()
+      require('noice').setup({
+        lsp = {
+          override = {
+            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+            ['vim.lsp.util.stylize_markdown'] = true,
+            ['cmp.entry.get_documentation'] = true
+          }
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = true,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = false,
+        }
+      })
+    end
+  },
+
   -- LaTeX support
   {
     'lervag/vimtex',
@@ -162,7 +210,6 @@ local plugins = {
   -- Tree file explorer
   {
     'nvim-tree/nvim-tree.lua',
-    tag = 'nightly',
     config = function()
       require('nvim-tree').setup({
         hijack_cursor = true,

@@ -24,7 +24,8 @@ case "$PATH" in
 esac
 
 # Home directory clean-up
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export MAMBARC="$XDG_CONFIG_HOME/conda/condarc"
 
 # Sort hidden files on top
 export LC_COLLATE="C"
