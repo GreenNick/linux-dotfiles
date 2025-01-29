@@ -10,7 +10,12 @@
         src = ./.;
         name = "app-launcher";
         entry = "app.ts";
+
+        extraPackages = [
+          ags.packages.${pkgs.system}.apps
+        ];
       })
+      dart-sass
     ];
   };
 }

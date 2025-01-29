@@ -64,7 +64,8 @@
           };
           modules = [
             ./modules/ags/app-launcher
-            ./modules/gui/ghostty.nix
+            ./modules/cli/direnv.nix
+            ./modules/cli/eza.nix
             ./modules/cli/zsh.nix
             ./hosts/nick-laptop/configuration.nix
           ];

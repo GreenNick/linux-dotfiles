@@ -8,7 +8,7 @@
   home.packages = with pkgs; [
     bat
     bottom
-    eza
+    ghostty
     nerd-fonts.caskaydia-cove
     nerd-fonts.noto
     ripgrep
@@ -23,8 +23,11 @@
     # '')
   ];
 
+  # ags
   app-launcher.enable = true;
-  ghostty.enable = true;
+  # cli
+  direnv.enable = true;
+  eza.enable = true;
   zsh.enable = true;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

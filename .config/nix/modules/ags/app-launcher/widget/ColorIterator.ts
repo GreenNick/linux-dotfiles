@@ -1,4 +1,4 @@
-export class ColorIterator {
+class ColorIterator {
   idx: number
   arr: string[]
 
@@ -20,3 +20,5 @@ export class ColorIterator {
     return color
   }
 }
+
+export default ColorIterator

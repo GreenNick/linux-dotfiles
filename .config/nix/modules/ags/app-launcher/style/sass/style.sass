@@ -1,0 +1,57 @@
+@use 'colors'
+
+*
+  all: unset
+  color: colors.$text
+  font-family: 'CaskaydiaCove Nerd Font'
+  font-size: 14px
+
+.App-Launcher
+  .launcher-container
+    background-color: colors.$mantle
+    border: 3px solid colors.$mauve
+    border-radius: 12px
+    padding: 8px
+
+  .side-image
+    background-image: url('../../assets/launcher_side_image.png')
+    background-size: cover
+    background-position: right
+    border-radius: 6px
+    margin-left: 8px
+    min-width: 200px
+
+  .scrollable
+    min-width: 400px
+    min-height: calc(45px * 6)
+
+  .search-bar
+    entry
+      padding-left: 6px
+      border-radius: 6px
+      background-color: colors.$surface0
+
+      &:focus
+        border: 2px solid colors.$blue
+
+    label
+      color: colors.$base
+      background-color: colors.$blue
+      padding: 12px
+      border-radius: 6px
+
+  .app-list
+    background-color: colors.$mantle
+
+    button
+      // padding: 4px
+      padding: 12px
+      margin-top: 5px
+      border-radius: 6px
+      background-color: colors.$base
+
+      &:hover
+        background-color: colors.$peach
+
+        label
+          color: colors.$base
