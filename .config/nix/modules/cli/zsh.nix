@@ -6,7 +6,15 @@
   config = lib.mkIf config.zsh.enable {
     programs.zsh = {
       enable = true;
+      autocd = true;
+      defaultKeymap = "viins";
       dotDir = ".config/zsh";
+      history = {
+        ignoreAllDups = true;
+        path = "${config.xdg.stateHome}/zsh/history";
+        save = 10000;
+        size = 10000;
+      };
       initExtra = ''
         # ZSH Configuration
 
@@ -34,28 +42,20 @@
 
         add-zsh-hook -Uz precmd show_conda_env
 
-        # Load aliases
-        [ -f "$XDG_CONFIG_HOME/shell/aliases" ] \
-            && source "$XDG_CONFIG_HOME/shell/aliases"
-
         # Load system-specific configuration
         [ -f "$XDG_CONFIG_HOME/shell/system" ] \
             && source $XDG_CONFIG_HOME/shell/system
 
-        # Set shell history options
-        HISTFILE=$XDG_STATE_HOME/zsh/history
-        HISTSIZE=10000
-        SAVEHIST=10000
+        # Load aliases
+        [ -f "$XDG_CONFIG_HOME/shell/aliases" ] \
+            && source "$XDG_CONFIG_HOME/shell/aliases"
 
         # Set auto-completion options
         autoload -Uz compinit
         zstyle ':completion:*' menu select cache-path $XDG_CACHE_HOME/zsh/zcompcache
         compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
 
-        setopt autocd beep extendedglob nomatch notify
-
-        # Enable vi key bindings
-        bindkey -v
+        setopt beep extendedglob nomatch notify
 
         # Auto attach to Zellij session
         if [ -z "$ZELLIJ" -a "$TERM_PROGRAM" = "vscode" ]; then
@@ -83,9 +83,6 @@
             *"$HOME/.local/bin"*) ;;
             *) export PATH="$PATH:$HOME/.local/bin" ;;
         esac
-
-        # Home directory clean-up
-        export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
         # Sort hidden files on top
         export LC_COLLATE="C"
