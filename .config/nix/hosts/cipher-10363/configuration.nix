@@ -23,6 +23,7 @@
 
   direnv.enable = true;
   eza.enable = true;
+  fastfetch.enable = true;
   zsh.enable = true;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

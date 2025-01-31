@@ -27,6 +27,7 @@
   # cli
   direnv.enable = true;
   eza.enable = true;
+  fastfetch.enable = true;
   zsh.enable = true;
   xdg_config.enable = true;
 
