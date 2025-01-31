@@ -74,6 +74,7 @@
             ./modules/cli/direnv.nix
             ./modules/cli/eza.nix
             ./modules/cli/zsh.nix
+            ./modules/xdg.nix
             ./hosts/nick-laptop/configuration.nix
           ];
         };
