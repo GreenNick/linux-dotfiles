@@ -76,6 +76,7 @@
             ./modules/cli/eza.nix
             ./modules/cli/fastfetch.nix
             ./modules/cli/zsh.nix
+            ./modules/gtk.nix
             ./modules/xdg.nix
             ./hosts/nick-laptop/configuration.nix
           ];

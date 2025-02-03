@@ -14,7 +14,7 @@
     padding: 8px
 
   .side-image
-    background-image: url('../../assets/launcher_side_image.png')
+    background-image: url('assets/launcher_side_image.png')
     background-size: cover
     background-position: right
     border-radius: 6px
@@ -23,7 +23,7 @@
 
   .scrollable
     min-width: 400px
-    min-height: calc(45px * 6)
+    min-height: calc((40px + 5px) * 6)
 
   .search-bar
     entry
@@ -44,11 +44,13 @@
     background-color: colors.$mantle
 
     button
-      // padding: 4px
-      padding: 12px
+      padding: 4px
       margin-top: 5px
       border-radius: 6px
       background-color: colors.$base
+
+      icon
+        font-size: 32px
 
       &:hover
         background-color: colors.$peach

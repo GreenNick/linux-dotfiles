@@ -49,10 +49,7 @@ const AppListItem = (
     }}
   >
     <box spacing={8}>
-      <icon
-        icon={app.icon_name ?? 'application-default-icon'}
-        iconSize={32}
-      />
+      <icon icon={app.icon_name ?? 'application-default-icon'} />
       <label>{app.name}</label>
     </box>
   </button>
