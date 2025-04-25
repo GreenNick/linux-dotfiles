@@ -1,4 +1,8 @@
 " Neovim Configuration "
+"
+" Set <Leader> to <Space>
+nnoremap <Space> <Nop>
+let mapleader=' '
 
 " Enable plugins with packer
 lua require('plugins')
@@ -65,10 +69,6 @@ set backupcopy=yes
 " Reduce CursorHold time
 set updatetime=500
 
-" Set <Leader> to <Space>
-nnoremap <Space> <Nop>
-let mapleader=' '
-
 " Disable q:, q/, q? keybindings
 nnoremap q: <Nop>
 nnoremap q/ <Nop>
@@ -99,12 +99,3 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
-" Telescope finders
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<Enter>
-nnoremap <leader>f/ <cmd>lua require('telescope.builtin').live_grep()<Enter>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<Enter>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<Enter>
-
-" Toggle Nvim-Tree
-nnoremap <leader>tt <cmd>lua require('nvim-tree.api').tree.toggle()<Enter>

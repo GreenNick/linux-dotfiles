@@ -23,59 +23,69 @@ local plugins = {
 
   -- Language Server Protocol configuration
   {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
+    'neovim/nvim-lspconfig',
     config = function()
-      local lsp = require('lsp-zero').preset({})
-      lsp.on_attach(function(_, bufnr)
-        -- Set default keybindings
-        lsp.default_keymaps({ buffer = bufnr })
-        -- Show diagnostics on hover
-        vim.api.nvim_create_autocmd('CursorHold', {
-          buffer = bufnr,
-          callback = function()
-            local opts = {
-              focusable = false,
-              close_events = {
-                'BufLeave',
-                'CursorMoved',
-                'InsertEnter',
-                'FocusLost'
-              },
-              border = 'rounded',
-              source = 'always',
-              prefix = '',
-              scope = 'cursor'
-            }
-            vim.diagnostic.open_float(nil, opts)
-          end
-        })
-      end)
-      -- Disable virtual text
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(_, bufnr)
+          -- Show diagnostics on hover
+          vim.api.nvim_create_autocmd('CursorHold', {
+            buffer = bufnr,
+            callback = function()
+              local opts = {
+                focusable = false,
+                close_events = {
+                  'BufLeave',
+                  'CursorMoved',
+                  'InsertEnter',
+                  'FocusLost'
+                },
+                border = 'rounded',
+                source = 'always',
+                prefix = '',
+                scope = 'cursor'
+              }
+              vim.diagnostic.open_float(nil, opts)
+            end
+          })
+        end
+      })
+
       vim.diagnostic.config({
-        virtual_text = false
+        -- Disable virtual text
+        virtual_text = false,
+        -- Define custom diagnostic signs
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.INFO] = ''
+          }
+        }
       })
-      -- Define custom diagnostic signs
-      lsp.set_sign_icons({
-        error = '',
-        warn = '',
-        hint = '',
-        info = ''
-      })
-      lsp.setup()
+
       -- Load language configurations
       require('language_servers')
     end,
-    dependencies = {
-      -- LSP Support
-      'neovim/nvim-lspconfig',
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      -- Autocompletion
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lsp',
-      'L3MON4D3/LuaSnip',
-    }
+    dependencies = { 'saghen/blink.cmp' }
+  },
+
+  -- Language Server Protocol autocompletion
+  {
+    'saghen/blink.cmp',
+    version = '*',
+    opts = {
+      keymap = { preset = 'default' },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono'
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' }
+      },
+      fuzzy = { implementation = 'prefer_rust_with_warning' }
+    },
+    opts_extend = { 'sources.default' }
   },
 
   -- Java language server
@@ -87,7 +97,8 @@ local plugins = {
     config = function()
       local lint = require('lint')
       lint.linters_by_ft = {
-        java = { 'checkstyle' }
+        java = { 'checkstyle' },
+        javascript = { 'eslint' }
       }
 
       lint.linters.checkstyle.config_file = 'checkstyle.xml'
@@ -144,6 +155,7 @@ local plugins = {
     config = function()
       require('catppuccin').setup({
         integrations = {
+          blink_cmp = true,
           gitsigns = true,
           leap = true,
           mason = true,
@@ -166,9 +178,11 @@ local plugins = {
               background = true,
             },
           },
-          nvimtree = true,
-          telescope = {
-            enabled = true
+          noice = true,
+          nvim_surround = true,
+          snacks = {
+            enabled = true,
+            indent_scope_color = 'lavender'
           },
           treesitter = true
         }
@@ -179,7 +193,6 @@ local plugins = {
 
   -- Highlight color strings
   'norcalli/nvim-colorizer.lua',
-
 
   -- Git integration
   {
@@ -207,48 +220,28 @@ local plugins = {
     }
   },
 
-  -- Tree file explorer
+  -- Collection of QoL plugins
   {
-    'nvim-tree/nvim-tree.lua',
-    config = function()
-      require('nvim-tree').setup({
-        hijack_cursor = true,
-        sync_root_with_cwd = true,
-        view = {
-          centralize_selection = true,
-          float = {
-            enable = true,
-            open_win_config = {
-              width = 50,
-              height = vim.api.nvim_win_get_height(0) - 2
-            }
-          }
-        },
-        renderer = {
-          group_empty = true
-        }
-      })
-    end,
-    dependencies = {
-      'nvim-tree/nvim-web-devicons'
-    }
-  },
-
-  -- Fuzzy searching
-  {
-    'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
-    config = function()
-      require('telescope').load_extension('fzf')
-    end,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'nvim-treesitter/nvim-treesitter',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make'
-      }
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      -- Tree file explorer
+      explorer = { enabled = true },
+      -- Mark indent levels
+      indent = {
+        enabled = true,
+        animate = { enabled = false }
+      },
+      -- Fuzzy searching
+      picker = { enabled = true }
+    },
+    keys = {
+      { '<leader>ff', function() Snacks.picker.files({ ignored = true }) end, desc = 'Find files' },
+      { '<leader>fb', function() Snacks.picker.buffers() end, desc = 'Find buffers' },
+      { '<leader>f/', function() Snacks.picker.grep() end, desc = 'Live grep' },
+      { '<leader>fh', function() Snacks.picker.help() end, desc = 'Search help' },
+      { '<leader>ft', function() Snacks.explorer() end, desc = 'Open explorer' }
     }
   },
 

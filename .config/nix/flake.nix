@@ -81,6 +81,25 @@
             ./hosts/nick-laptop/configuration.nix
           ];
         };
+        "nbowers7" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${linuxSystem};
+          extraSpecialArgs = inputs // {
+            user = "nbowers7";
+            homeDir = "/home/nbowers7";
+            system = "${linuxSystem}";
+          };
+          modules = [
+            ./modules/ags/app-launcher
+            ./modules/cli/direnv.nix
+            ./modules/cli/eza.nix
+            ./modules/cli/fastfetch.nix
+            ./modules/cli/zsh.nix
+            ./modules/exchange.nix
+            ./modules/gtk.nix
+            ./modules/xdg.nix
+            ./hosts/cipher-10192/configuration.nix
+          ];
+        };
       };
     };
 }

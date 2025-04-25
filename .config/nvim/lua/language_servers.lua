@@ -2,6 +2,11 @@
 
 local lspconfig = require('lspconfig')
 
+-- Flow configuration
+lspconfig.flow.setup {
+  cmd = { 'flow', 'lsp' }
+}
+
 -- Python configuration
 lspconfig.pylsp.setup {
   settings = {
@@ -20,7 +25,7 @@ lspconfig.pylsp.setup {
         -- Type checking
         pylsp_mypy = {
           enabled = true,
-          overrides = { "--python-executable", py_path, true },
+          overrides = { '--python-executable', py_path, true },
           report_progress = true,
           live_mode = false
         },
