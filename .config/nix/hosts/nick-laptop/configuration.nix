@@ -28,7 +28,11 @@
   direnv.enable = true;
   eza.enable = true;
   fastfetch.enable = true;
+  lsColors.enable = true;
   zsh.enable = true;
+  # gui
+  imv.enable = true;
+  # misc
   gtk_config.enable = true;
   xdg_config.enable = true;
 

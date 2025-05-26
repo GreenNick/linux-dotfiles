@@ -4,6 +4,9 @@
   };
 
   config = lib.mkIf config.xdg_config.enable {
+    home = {
+      preferXdgDirectories = true;
+    };
     xdg = {
       mimeApps = {
         enable = true;

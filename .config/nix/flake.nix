@@ -51,10 +51,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.nbowers7 = {
                 imports = [
-                  ./modules/cli/direnv.nix
-                  ./modules/cli/eza.nix
-                  ./modules/cli/fastfetch.nix
-                  ./modules/cli/zsh.nix
+                  ./modules
                   ./hosts/cipher-10363/configuration.nix
                 ];
               };
@@ -71,13 +68,7 @@
             system = "${linuxSystem}";
           };
           modules = [
-            ./modules/ags/app-launcher
-            ./modules/cli/direnv.nix
-            ./modules/cli/eza.nix
-            ./modules/cli/fastfetch.nix
-            ./modules/cli/zsh.nix
-            ./modules/gtk.nix
-            ./modules/xdg.nix
+            ./modules
             ./hosts/nick-laptop/configuration.nix
           ];
         };
@@ -89,14 +80,7 @@
             system = "${linuxSystem}";
           };
           modules = [
-            ./modules/ags/app-launcher
-            ./modules/cli/direnv.nix
-            ./modules/cli/eza.nix
-            ./modules/cli/fastfetch.nix
-            ./modules/cli/zsh.nix
-            ./modules/exchange.nix
-            ./modules/gtk.nix
-            ./modules/xdg.nix
+            ./modules
             ./hosts/cipher-10192/configuration.nix
           ];
         };

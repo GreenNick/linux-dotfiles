@@ -40,8 +40,8 @@ fi
 # Open nnn
 alias n3="nnn -de"
 
-# Clear terminal and run neofetch
-alias fetch="clear && neofetch"
+# Clear terminal and run fastfetch
+alias fetch="clear && fastfetch"
 
 # Handle dotfile tracking
 alias config='/usr/bin/git --git-dir=$HOME/Git/.dotfiles/ --work-tree=$HOME'
