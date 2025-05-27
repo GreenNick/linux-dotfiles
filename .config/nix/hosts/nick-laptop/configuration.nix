@@ -6,8 +6,6 @@
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
-    bat
-    bottom
     ghostty
     nerd-fonts.caskaydia-cove
     nerd-fonts.noto
@@ -25,6 +23,8 @@
   # ags
   app-launcher.enable = true;
   # cli
+  bat.enable = true;
+  bottom.enable = true;
   direnv.enable = true;
   eza.enable = true;
   fastfetch.enable = true;

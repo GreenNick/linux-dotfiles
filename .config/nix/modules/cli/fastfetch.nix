@@ -4,6 +4,9 @@
   };
 
   config = lib.mkIf config.fastfetch.enable {
+    home.shellAliases = {
+      fetch = "clear && fastfetch";
+    };
     programs.fastfetch = {
       enable = true;
       settings = {

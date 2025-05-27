@@ -4,6 +4,10 @@
   };
 
   config = lib.mkIf config.eza.enable {
+    home.shellAliases = {
+      ls = "eza";
+      tree = "eza --tree";
+    };
     programs.eza = {
       enable = true;
       enableZshIntegration = true;
