@@ -5,6 +5,7 @@
     ./direnv.nix
     ./eza.nix
     ./fastfetch.nix
+    ./git.nix
     ./ls-colors.nix
     ./zsh.nix
   ];

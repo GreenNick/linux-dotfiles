@@ -1,10 +1,10 @@
 
 { config, lib, pkgs, ... }: {
   options = {
-    gtk_config.enable = lib.mkEnableOption "Enable gtk config";
+    gtkConfig.enable = lib.mkEnableOption "Enable gtk config";
   };
 
-  config = lib.mkIf config.gtk_config.enable {
+  config = lib.mkIf config.gtkConfig.enable {
     gtk = {
       enable = true;
       font = null;

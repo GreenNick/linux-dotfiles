@@ -1,22 +1,19 @@
 { config, user, homeDir, pkgs, ... }: {
-  home.username = "nick";
-  home.homeDirectory = "/home/nick";
+  home.username = "nbowers7";
+  home.homeDirectory = "/home/nbowers7";
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
-    ghostty
+    foot
+    neovim
     nerd-fonts.caskaydia-cove
     nerd-fonts.noto
+    nodePackages.cspell
     ripgrep
     zellij
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+  ] ++ builtins.attrValues {
+    vpn-up = (pkgs.callPackage ./vpn-up.nix {});
+  };
 
   # ags
   app-launcher.enable = true;
@@ -29,9 +26,8 @@
   git.enable = true;
   lsColors.enable = true;
   zsh.enable = true;
-  # gui
-  imv.enable = true;
   # misc
+  exchange.enable = true;
   gtkConfig.enable = true;
   xdgConfig.enable = true;
 

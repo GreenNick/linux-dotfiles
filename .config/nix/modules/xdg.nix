@@ -1,9 +1,9 @@
 { config, lib, ... }: {
   options = {
-    xdg_config.enable = lib.mkEnableOption "Enable xdg config";
+    xdgConfig.enable = lib.mkEnableOption "Enable xdg config";
   };
 
-  config = lib.mkIf config.xdg_config.enable {
+  config = lib.mkIf config.xdgConfig.enable {
     home = {
       preferXdgDirectories = true;
     };
