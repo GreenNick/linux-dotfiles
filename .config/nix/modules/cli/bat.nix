@@ -7,7 +7,8 @@
     home = {
       sessionVariables = {
         BAT_THEME = "ansi";
-        MANPAGER = "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'";
+        MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+        MANROFFOPT = "-c";
       };
       shellAliases = {
         cat = "bat --paging=never";

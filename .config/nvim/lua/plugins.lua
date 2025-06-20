@@ -197,7 +197,13 @@ local plugins = {
   {
     'lewis6991/gitsigns.nvim',
     config = function()
-      require('gitsigns').setup()
+      require('gitsigns').setup({
+        on_attach = function(bufnr)
+          local gitsigns = require('gitsigns')
+
+          vim.keymap.set('n', '<Leader>gb', gitsigns.blame)
+        end
+      })
     end
   },
 
@@ -236,11 +242,11 @@ local plugins = {
       picker = { enabled = true }
     },
     keys = {
-      { '<leader>ff', function() Snacks.picker.files({ ignored = true }) end, desc = 'Find files' },
-      { '<leader>fb', function() Snacks.picker.buffers() end, desc = 'Find buffers' },
-      { '<leader>f/', function() Snacks.picker.grep() end, desc = 'Live grep' },
-      { '<leader>fh', function() Snacks.picker.help() end, desc = 'Search help' },
-      { '<leader>ft', function() Snacks.explorer() end, desc = 'Open explorer' }
+      { '<Leader>ff', function() Snacks.picker.files({ ignored = true }) end, desc = 'Find files' },
+      { '<Leader>fb', function() Snacks.picker.buffers() end, desc = 'Find buffers' },
+      { '<Leader>f/', function() Snacks.picker.grep() end, desc = 'Live grep' },
+      { '<Leader>fh', function() Snacks.picker.help() end, desc = 'Search help' },
+      { '<Leader>ft', function() Snacks.explorer() end, desc = 'Open explorer' }
     }
   },
 
@@ -288,7 +294,10 @@ local plugins = {
     config = function()
       require('mini.trailspace').setup()
     end
-  }
+  },
+
+  -- Paired mappings to jump to text objects
+  'tpope/vim-unimpaired'
 }
 
 local opts = {}
